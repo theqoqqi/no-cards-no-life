@@ -6,15 +6,22 @@ namespace Core.Events {
 
         public static readonly GameEvents Instance = new GameEvents();
 
-        private readonly Dictionary<Type, Action<IGameEvent>> eventListeners =
-                new Dictionary<Type, Action<IGameEvent>>();
+        private readonly Dictionary<Type, object> eventListeners = new Dictionary<Type, object>();
 
         public T NewEvent<T>() where T : IGameEvent, new() {
             return new T();
         }
 
-        public void Dispatch(IGameEvent gameEvent) {
-            eventListeners[gameEvent.GetType()]?.Invoke(gameEvent);
+        public void Dispatch<T>(T gameEvent) where T : IGameEvent {
+            var eventType = gameEvent.GetType();
+
+            if (!eventListeners.ContainsKey(eventType)) {
+                return;
+            }
+            
+            var eventListener = eventListeners[eventType] as Action<T>;
+            
+            eventListener?.Invoke(gameEvent);
         }
 
         public void Dispatch<T>(Action<T> init) where T : IGameEvent, new() {
@@ -23,9 +30,9 @@ namespace Core.Events {
             Dispatch(e);
         }
 
-        public void On<T>(Action<IGameEvent> listener) where T : IGameEvent {
+        public void On<T>(Action<T> listener) where T : IGameEvent {
             if (eventListeners.ContainsKey(typeof(T))) {
-                eventListeners[typeof(T)] += listener;
+                eventListeners[typeof(T)] = eventListeners[typeof(T)] as Action<T> + listener;
             }
             else {
                 eventListeners[typeof(T)] = listener;

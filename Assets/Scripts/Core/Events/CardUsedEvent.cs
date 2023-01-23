@@ -1,8 +1,12 @@
-﻿namespace Core.Events {
+﻿using Core.Cards;
+
+namespace Core.Events {
     public class CardUsedEvent : IGameEvent {
 
-        public void Setup() {
-            
+        public Card Card { get; private set; }
+        
+        public void Setup(Card card) {
+            Card = card;
         }
     }
 }

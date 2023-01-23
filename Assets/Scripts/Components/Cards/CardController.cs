@@ -1,5 +1,6 @@
-﻿using System;
-using Components.Scenes;
+﻿using Components.Scenes;
+using Components.Utils;
+using Core.Cards;
 using Core.Events;
 using UnityEngine;
 
@@ -8,13 +9,19 @@ namespace Components.Cards {
 
         [SerializeField] private SpriteRenderer spriteRenderer;
 
+        [SerializeField] private SpriteRenderer actionSpriteRenderer;
+
+        [SerializeField] private EasingTransform easingTransform;
+
+        [SerializeField] private CardCornerRenderer topLeftCorner;
+
+        [SerializeField] private CardCornerRenderer topRightCorner;
+
+        private SpriteRenderer[] childSpriteRenderers;
+
+        private Card card;
+
         private HandCamera handCamera;
-
-        private Vector3 targetLocalPosition;
-
-        private Quaternion targetLocalRotation;
-
-        private Vector3 targetLocalScale;
 
         private float hoverEasingSpeed = 10f;
 
@@ -31,93 +38,120 @@ namespace Components.Cards {
         private bool IsMouseDown => Input.GetKey(KeyCode.Mouse0);
 
         private void Awake() {
-            targetLocalPosition = transform.localPosition;
-            targetLocalRotation = transform.localRotation;
-            targetLocalScale = transform.localScale;
+            card = new MoveCard(0);
             handCamera = FindObjectOfType<HandCamera>();
+            childSpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         }
 
         private void Update() {
             UpdateTargetTransformState();
-            UpdateTransform();
+            UpdateEasingSpeed();
             UpdateSortingOrder();
+            UpdateCardVisibility();
         }
 
         private void UpdateTargetTransformState() {
             if (isGrabbed) {
                 var localMousePosition = GetLocalMousePosition();
 
-                targetLocalPosition = new Vector3(
+                if (!IsMouseInUseArea()) {
+                    localMousePosition += grabOffset;
+                }
+
+                easingTransform.TargetLocalPosition = new Vector3(
                         localMousePosition.x,
                         localMousePosition.y,
                         transform.localPosition.z
                 );
             }
             else if (IsMouseDown) {
-                targetLocalPosition = Vector3.zero;
+                easingTransform.TargetLocalPosition = Vector3.zero;
             }
 
-            targetLocalScale = Vector3.one * (isGrabbed && IsMouseInUseArea() ? 1f : 1.5f);
+            easingTransform.TargetLocalScale = Vector3.one * (isGrabbed && IsMouseInUseArea() ? 1f : 1.5f);
         }
 
-        private void UpdateTransform() {
-            var easingSpeed = isGrabbed ? dragEasingSpeed : hoverEasingSpeed;
-
-            transform.localPosition = Vector3.Lerp(
-                    transform.localPosition,
-                    targetLocalPosition,
-                    Time.deltaTime * easingSpeed
-            );
-
-            transform.localRotation = Quaternion.Lerp(
-                    transform.localRotation,
-                    targetLocalRotation,
-                    Time.deltaTime * easingSpeed
-            );
-
-            transform.localScale = Vector3.Lerp(
-                    transform.localScale,
-                    targetLocalScale,
-                    Time.deltaTime * easingSpeed
-            );
+        private void UpdateEasingSpeed() {
+            easingTransform.EasingSpeed = isGrabbed ? dragEasingSpeed : hoverEasingSpeed;
         }
 
         private void UpdateSortingOrder() {
-            spriteRenderer.sortingOrder = (isHovered && !IsMouseDown) || isGrabbed ? 1 : 0;
+            var order = (isHovered && !IsMouseDown) || isGrabbed ? 1 : 0;
+            
+            spriteRenderer.sortingOrder = order;
+            topLeftCorner.SetSortingOrder(order);
+            topRightCorner.SetSortingOrder(order);
+
+            foreach (var childSpriteRenderer in childSpriteRenderers) {
+                childSpriteRenderer.sortingOrder = order;
+            }
+        }
+
+        private void UpdateCardVisibility() {
+            var targetOpacity = isGrabbed && IsMouseInUseArea() ? 0 : 1;
+            
+            ApplyOpacity(spriteRenderer, targetOpacity, Time.deltaTime * 10);
+
+            foreach (var childSpriteRenderer in childSpriteRenderers) {
+                ApplyOpacity(childSpriteRenderer, targetOpacity, Time.deltaTime * 10);
+            }
+
+            topLeftCorner.SetOpacity(targetOpacity);
+            topRightCorner.SetOpacity(targetOpacity);
+
+            ApplyOpacity(actionSpriteRenderer, 1, 1);
+        }
+
+        private void ApplyOpacity(SpriteRenderer spriteRenderer, int opacity, float lerp) {
+            spriteRenderer.color = ApplyOpacity(spriteRenderer.color, opacity, lerp);
+        }
+
+        private Color ApplyOpacity(Color color, int opacity, float lerp) {
+            color.a = Mathf.Lerp(color.a, opacity, lerp);
+            
+            return color;
         }
 
         private void OnMouseEnter() {
             isHovered = true;
-            targetLocalPosition = Vector3.up * 2;
+            easingTransform.TargetLocalPosition = Vector3.up * 2;
         }
 
         private void OnMouseExit() {
             isHovered = false;
-            targetLocalPosition = Vector3.zero;
+            easingTransform.TargetLocalPosition = Vector3.zero;
         }
 
         private void OnMouseDown() {
             isGrabbed = true;
             grabOffset = Vector3.up;
-            targetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
+            easingTransform.TargetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
         }
 
         private void OnMouseUp() {
             isGrabbed = false;
-            targetLocalPosition = Vector3.zero;
-            targetLocalRotation = Quaternion.identity;
+            easingTransform.TargetLocalPosition = Vector3.zero;
+            easingTransform.TargetLocalRotation = Quaternion.identity;
 
             if (IsMouseInUseArea()) {
                 GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
-                    e.Setup();
+                    e.Setup(card);
                 });
             }
+        }
+
+        public void SetCard(Card card) {
+            this.card = card;
+            
+            actionSpriteRenderer.sprite = card.ActionSprite;
+            topLeftCorner.Setup(card.TopLeft);
+            topRightCorner.Setup(card.TopRight);
         }
 
         private Vector3 GetLocalMousePosition() {
             var mousePosition = handCamera.Camera.ScreenToWorldPoint(Input.mousePosition);
 
-            return transform.parent.InverseTransformPoint(mousePosition + grabOffset);
+            return transform.parent.InverseTransformPoint(mousePosition);
         }
 
         private bool IsMouseInUseArea() {

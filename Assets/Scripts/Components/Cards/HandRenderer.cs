@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Core.Cards;
+using UnityEngine;
 
 namespace Components.Cards {
     public class HandRenderer : MonoBehaviour {
+
+        [SerializeField] private GameObject cardContainerPrefab;
 
         [SerializeField] private float radius;
 
@@ -9,23 +15,101 @@ namespace Components.Cards {
 
         [SerializeField] private float maxTotalDistance;
 
-        private void Update() {
+        private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
+
+        private void Start() {
+            var deck = Game.Instance.GameState.CurrentDeck;
+            
+            SetCurrentDeck(deck);
+            AdjustCards();
+
+            deck.OnCardAdded += OnCardAdded;
+            deck.OnCardRemoved += OnCardRemoved;
+        }
+
+        private void OnDestroy() {
+            var deck = Game.Instance.GameState.CurrentDeck;
+            
+            deck.OnCardAdded -= OnCardAdded;
+            deck.OnCardRemoved -= OnCardRemoved;
+        }
+
+        private void OnCardAdded(Card card) {
+            AddCard(card);
             AdjustCards();
         }
 
+        private void OnCardRemoved(Card card) {
+            RemoveCard(card);
+            AdjustCards();
+        }
+
+        private void SetCurrentDeck(Deck deck) {
+            ClearCards();
+            
+            foreach (var card in deck.Cards) {
+                AddCard(card);
+            }
+        }
+
+        private void ClearCards() {
+            foreach (var card in cardContainers.Keys) {
+                RemoveCard(card);
+            }
+        }
+
+        private void AddCard(Card card) {
+            var position = transform.position + Vector3.down * radius;
+            var cardContainer = Instantiate(cardContainerPrefab, gameObject.transform)
+                    .GetComponent<CardContainer>();
+            
+            cardContainer.SetLocalPositionAndRotation(position, Quaternion.identity);
+            cardContainer.SetCard(card);
+
+            cardContainers[card] = cardContainer;
+        }
+
+        private void RemoveCard(Card card) {
+            var cardContainer = cardContainers[card];
+
+            cardContainers.Remove(card);
+            Destroy(cardContainer.gameObject);
+        }
+
         private void AdjustCards() {
-            var cards = GetComponentsInChildren<CardContainer>();
+            var cards = GetComponentsInChildren<CardContainer>()
+                    .Where(cc => cc.isActiveAndEnabled)
+                    .ToArray();
             var rotations = GetRotations(cards.Length);
             var origin = transform.position + Vector3.down * radius;
-
+            
             for (var i = 0; i < cards.Length; i++) {
                 var rotation = rotations[i];
                 var card = cards[i];
-                
-                card.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                card.transform.RotateAround(origin, Vector3.forward, rotation);
-                card.transform.Translate(0, 0, i * -0.01f);
+
+                var position = GetCardTargetPosition(transform.position, origin, -rotation, i);
+                var quaternion = GetCardTargetQuaternion(-rotation);
+
+                card.SetTargetTransformState(position, quaternion, Vector3.one);
             }
+        }
+
+        private static Vector3 GetCardTargetPosition(Vector3 from, Vector3 origin, float rotation, int i) {
+            var position = RotatePosition(from, origin, rotation);
+            
+            position.z += i * 0.01f;
+            
+            return position - from;
+        }
+
+        private static Quaternion GetCardTargetQuaternion(float rotation) {
+            return Quaternion.Euler(0, 0, rotation);
+        }
+
+        private static Vector3 RotatePosition(Vector3 position, Vector3 origin, float rotation) {
+            var rotatedDelta = Quaternion.Euler(0, 0, rotation) * (position - origin);
+            
+            return origin + rotatedDelta;
         }
 
         private float[] GetRotations(int cardCount) {
