@@ -28,12 +28,12 @@ namespace Components {
             
             // deck.Shuffle();
             
-            GameState.CurrentDeck = deck;
+            GameState.CurrentHand = deck;
             
             
             
             GameEvents.Instance.On<CardUsedEvent>(e => {
-                GameState.CurrentDeck.RemoveCard(e.Card);
+                GameState.CurrentHand.RemoveCard(e.Card);
             });
         }
     }

@@ -18,7 +18,7 @@ namespace Components.Cards {
         private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
 
         private void Start() {
-            var deck = Game.Instance.GameState.CurrentDeck;
+            var deck = Game.Instance.GameState.CurrentHand;
             
             SetCurrentDeck(deck);
             AdjustCards();
@@ -28,7 +28,7 @@ namespace Components.Cards {
         }
 
         private void OnDestroy() {
-            var deck = Game.Instance.GameState.CurrentDeck;
+            var deck = Game.Instance.GameState.CurrentHand;
             
             deck.OnCardAdded -= OnCardAdded;
             deck.OnCardRemoved -= OnCardRemoved;
