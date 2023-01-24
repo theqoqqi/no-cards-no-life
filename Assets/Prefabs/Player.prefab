@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 1725693677}
-  board: {fileID: 0}
 --- !u!114 &1725693677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,3 +111,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00508f8b7a8d9b6458c635e70b5b51bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPassable: 0

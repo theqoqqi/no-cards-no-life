@@ -7,7 +7,7 @@ namespace Components {
     public class WasdControls : MonoBehaviour {
         [SerializeField] private GridAlignedBody body;
 
-        [SerializeField] private Board board;
+        private Board board;
 
         private void Awake() {
             board = GetComponentInParent<Board>();

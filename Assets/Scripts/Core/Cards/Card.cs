@@ -1,8 +1,10 @@
 ﻿
+using System.Collections.Generic;
+using Components.Boards;
 using UnityEngine;
 
 namespace Core.Cards {
-    public class Card {
+    public abstract class Card {
         
         private readonly CardMetadata metadata;
 
@@ -27,8 +29,10 @@ namespace Core.Cards {
 
             return new Corner(TopLeftValue, metadata.BackgroundSprite, metadata.TypeSprite);
         }
+
+        public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
         
-        public struct Corner {
+        public readonly struct Corner {
 
             public int Value { get; }
 

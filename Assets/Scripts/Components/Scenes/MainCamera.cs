@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Components.Scenes {
     public class MainCamera : MonoBehaviour {
 
-        private new Camera camera;
+        public Camera Camera { get; private set; }
 
         private Board board;
 
@@ -21,7 +21,7 @@ namespace Components.Scenes {
 
         private void Start() {
             board = FindObjectOfType<Board>();
-            camera = GetComponent<Camera>();
+            Camera = GetComponent<Camera>();
 
             Position = board.CenterPosition;
             SetSize(board.Height);
@@ -29,7 +29,7 @@ namespace Components.Scenes {
         }
 
         private void SetSize(int boardHeight) {
-            camera.orthographicSize = boardHeight / 2f * 1.6f;
+            Camera.orthographicSize = boardHeight / 2f * 1.6f;
         }
 
         private void Adjust(int boardHeight) {

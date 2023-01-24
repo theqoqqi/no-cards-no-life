@@ -1,4 +1,7 @@
-﻿using Core.Events;
+﻿using System;
+using Components.Scenes;
+using Core.Events;
+using Core.Util;
 using UnityEngine;
 
 namespace Components.Boards {
@@ -6,15 +9,34 @@ namespace Components.Boards {
 
         private TerrainTilemap terrainTilemap;
 
+        private GridTilemap gridTilemap;
+
         private EntityGrid entityGrid;
+
+        private MainCamera mainCamera;
 
         public Vector3 CenterPosition => terrainTilemap.CenterPosition;
 
         public int Height => terrainTilemap.Height;
 
+        public BoundsInt Bounds => terrainTilemap.CellBounds;
+
         private void Awake() {
             terrainTilemap = GetComponentInChildren<TerrainTilemap>();
+            gridTilemap = GetComponentInChildren<GridTilemap>();
             entityGrid = GetComponentInChildren<EntityGrid>();
+            mainCamera = FindObjectOfType<MainCamera>();
+        }
+
+        private void Update() {
+            var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
+
+            if (IsOnBoard(mouseCellPosition)) {
+                gridTilemap.SetSelectedCell((Vector2Int) mouseCellPosition);
+            }
+            else {
+                gridTilemap.ClearSelectedCell();
+            }
         }
 
         private void OnEnable() {
@@ -29,12 +51,14 @@ namespace Components.Boards {
             GameEvents.Instance.Off<CardDraggedFromBoardEvent>(OnCardDraggedFromBoard);
         }
 
-        private void OnCardDraggedFromBoard(CardDraggedFromBoardEvent e) {
-            Debug.Log("CardDraggedFromBoardEvent");
+        private void OnCardDraggedToBoard(CardDraggedToBoardEvent e) {
+            var selectableCells = e.Card.GetSelectableCells(this);
+            
+            gridTilemap.SetSelectableCells(selectableCells);
         }
 
-        private void OnCardDraggedToBoard(CardDraggedToBoardEvent e) {
-            Debug.Log("CardDraggedToBoardEvent");
+        private void OnCardDraggedFromBoard(CardDraggedFromBoardEvent e) {
+            gridTilemap.ClearSelectableCells();
         }
 
         private void OnCardUsed(CardUsedEvent e) {

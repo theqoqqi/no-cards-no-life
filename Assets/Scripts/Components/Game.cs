@@ -1,5 +1,4 @@
 ﻿using Core.Cards;
-using Core.Events;
 using Core.GameStates;
 using UnityEngine;
 

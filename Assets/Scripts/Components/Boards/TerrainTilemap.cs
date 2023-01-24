@@ -4,20 +4,20 @@ using UnityEngine.Tilemaps;
 namespace Components.Boards {
     public class TerrainTilemap : MonoBehaviour {
         
-        private Tilemap tilemap;
+        [SerializeField] private Tilemap tilemap;
 
         public Vector3 CenterPosition => tilemap.cellBounds.center;
         
         public int Height => tilemap.size.y;
 
+        public BoundsInt CellBounds => tilemap.cellBounds;
+
         private void Awake() {
-            tilemap = GetComponentInChildren<Tilemap>();
-            
             tilemap.CompressBounds();
         }
 
         public bool IsOnBoard(Vector3Int cellPosition) {
-            return tilemap.HasTile(cellPosition);
+            return tilemap.HasTile((Vector3Int) (Vector2Int) cellPosition);
         }
 
         public bool IsCellPassable(Vector3Int cellPosition) {
