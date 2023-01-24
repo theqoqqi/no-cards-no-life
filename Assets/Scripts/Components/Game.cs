@@ -35,6 +35,14 @@ namespace Components {
             GameEvents.Instance.On<CardUsedEvent>(e => {
                 GameState.CurrentHand.RemoveCard(e.Card);
             });
+            
+            GameEvents.Instance.On<CardDraggedToBoardEvent>(e => {
+                Debug.Log("CardDraggedToBoardEvent");
+            });
+            
+            GameEvents.Instance.On<CardDraggedFromBoardEvent>(e => {
+                Debug.Log("CardDraggedFromBoardEvent");
+            });
         }
     }
 }

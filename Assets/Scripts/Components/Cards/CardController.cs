@@ -35,6 +35,8 @@ namespace Components.Cards {
 
         private bool isGrabbed;
 
+        private bool isDraggedToBoard;
+
         private bool IsMouseDown => Input.GetKey(KeyCode.Mouse0);
 
         private void Awake() {
@@ -44,10 +46,34 @@ namespace Components.Cards {
         }
 
         private void Update() {
+            UpdateDraggedState();
             UpdateTargetTransformState();
             UpdateEasingSpeed();
             UpdateSortingOrder();
             UpdateCardVisibility();
+        }
+
+        private void UpdateDraggedState() {
+            if (!isGrabbed) {
+                return;
+            }
+            
+            var isMouseInUseArea = IsMouseInUseArea();
+            
+            if (isDraggedToBoard != isMouseInUseArea) {
+                isDraggedToBoard = isMouseInUseArea;
+
+                if (isDraggedToBoard) {
+                    GameEvents.Instance.Dispatch<CardDraggedToBoardEvent>(e => {
+                        e.Setup(card);
+                    });
+                }
+                else {
+                    GameEvents.Instance.Dispatch<CardDraggedFromBoardEvent>(e => {
+                        e.Setup(card);
+                    });
+                }
+            }
         }
 
         private void UpdateTargetTransformState() {
