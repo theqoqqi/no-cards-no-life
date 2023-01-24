@@ -38,5 +38,11 @@ namespace Core.Events {
                 eventListeners[typeof(T)] = listener;
             }
         }
+
+        public void Off<T>(Action<T> listener) where T : IGameEvent {
+            if (eventListeners.ContainsKey(typeof(T))) {
+                eventListeners[typeof(T)] = eventListeners[typeof(T)] as Action<T> - listener;
+            }
+        }
     }
 }
