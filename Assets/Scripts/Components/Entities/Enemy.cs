@@ -1,5 +1,5 @@
 ﻿namespace Components.Entities {
-    public class Enemy : EntityBehaviour {
-        
+    public class Enemy : BaseEntity {
+
     }
 }

@@ -1,5 +1,7 @@
-﻿namespace Components.Entities {
-    public class Player : EntityBehaviour {
+﻿using UnityEngine;
+
+namespace Components.Entities {
+    public class Player : BaseEntity {
 
     }
 }
