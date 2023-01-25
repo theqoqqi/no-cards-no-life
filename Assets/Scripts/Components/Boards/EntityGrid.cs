@@ -30,13 +30,6 @@ namespace Components.Boards {
             return body == null || body.IsPassable;
         }
 
-        public bool IsCellReserved(Vector3Int cellPosition) {
-            return EnumerateBodies()
-                    .FirstOrDefault(child => child.isActiveAndEnabled
-                                             && child.TargetCellPosition == cellPosition
-                                             && child.TargetCellPosition != child.CellPosition);
-        }
-
         public IEnumerable<T> GetObjectsOfType<T>() {
             return GetComponentsInChildren<T>();
         }

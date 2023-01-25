@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Core.Util;
 using UnityEngine;
 
@@ -14,9 +15,9 @@ namespace Components.Entities {
             set => transform.position = value;
         }
         
-        private Vector3 targetPosition;
+        private Vector3? targetPosition;
         
-        public Vector3Int TargetCellPosition => targetPosition.WorldToCell();
+        public Vector3Int? TargetCellPosition => targetPosition?.WorldToCell();
 
         private float currentMoveSpeed = 3f;
 
@@ -24,12 +25,12 @@ namespace Components.Entities {
 
         public bool IsOnTargetPosition => Position == targetPosition;
 
-        public bool IsMoving => !IsOnTargetPosition;
+        public bool IsMoving => targetPosition.HasValue && !IsOnTargetPosition;
 
         protected override void Awake() {
             base.Awake();
             
-            targetPosition = Position;
+            targetPosition = null;
         }
 
         private void Update() {
@@ -37,26 +38,46 @@ namespace Components.Entities {
         }
 
         private void StepTowardsTargetPosition() {
-            if (IsOnTargetPosition) {
+            if (!targetPosition.HasValue) {
                 return;
             }
-            
-            Position = Vector3.MoveTowards(Position, targetPosition, currentMoveSpeed * Time.deltaTime);
+
+            Position = Vector3.MoveTowards(Position, targetPosition.Value, currentMoveSpeed * Time.deltaTime);
             
             if (IsOnTargetPosition) {
+                targetPosition = null;
                 OnTargetPositionReached?.Invoke();
             }
         }
 
-        public void StartMoveTo(Direction direction) {
-            StartMoveTo(direction, currentMoveSpeed);
+        public async Task<Vector3Int> StartMoveTo(Direction direction) {
+            return await StartMoveTo(direction, currentMoveSpeed);
         }
 
-        public void StartMoveTo(Direction direction, float moveSpeed) {
+        public async Task<Vector3Int> StartMoveTo(Direction direction, float moveSpeed) {
+            return await StartMoveTo(Position + direction.AsPosition(), moveSpeed);
+        }
+
+        public async Task<Vector3Int> StartMoveTo(Vector3 position) {
+            return await StartMoveTo(position, currentMoveSpeed);
+        }
+
+        public async Task<Vector3Int> StartMoveTo(Vector3 position, float moveSpeed) {
             StopMovement();
-            
-            targetPosition = Position + direction.AsPosition();
+
+            var taskCompletionSource = new TaskCompletionSource<Vector3Int>();
+
+            targetPosition = position;
             currentMoveSpeed = moveSpeed;
+
+            OnTargetPositionReached += Listener;
+
+            void Listener() {
+                taskCompletionSource.SetResult(Position.WorldToCell());
+                OnTargetPositionReached -= Listener;
+            }
+
+            return await taskCompletionSource.Task;
         }
         
         private void StopMovement() {
