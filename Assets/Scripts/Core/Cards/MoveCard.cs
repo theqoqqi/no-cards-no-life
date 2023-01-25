@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Components.Boards;
+using Core.Pathfinding;
 using UnityEngine;
 
 namespace Core.Cards {
@@ -7,20 +8,18 @@ namespace Core.Cards {
 
         private readonly int maxDistance;
 
-        public override int TopLeftValue => maxDistance;
+        protected override int TopLeftValue => maxDistance;
 
         public MoveCard(int maxDistance) : base("Move") {
             this.maxDistance = maxDistance;
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {
-            var cells = new List<Vector2Int>();
+            var search = new AStarSearch(board.PassabilityGrid, board.Player.CellPosition);
             
-            foreach (var cellPosition in board.Bounds.allPositionsWithin) {
-                cells.Add((Vector2Int) cellPosition);
-            }
-
-            return cells;
+            return search.FindPositions(new AStarSearch.FindOptions((_, distance) => {
+                return distance <= maxDistance;
+            }));
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿
 using System.Collections.Generic;
 using Components.Boards;
+using Components.Entities;
+using Core.Util;
 using UnityEngine;
 
 namespace Core.Cards {
@@ -10,9 +12,9 @@ namespace Core.Cards {
 
         public Sprite ActionSprite => metadata.ActionSprite;
 
-        public virtual int TopLeftValue { get; } = 0;
+        protected virtual int TopLeftValue { get; } = 0;
 
-        public virtual int TopRightValue { get; } = 0;
+        protected virtual int TopRightValue { get; } = 0;
 
         public Corner? TopLeft => GetCorner(metadata.TopLeft, TopLeftValue);
 
@@ -45,6 +47,14 @@ namespace Core.Cards {
                 BackgroundSprite = backgroundSprite;
                 TypeSprite = typeSprite;
             }
+        }
+
+        protected static bool IsInRange(Player player, Vector2Int to, int distance) {
+            return IsInRange(player.CellPosition, to, distance);
+        }
+
+        protected static bool IsInRange(Vector3Int from, Vector2Int to, int distance) {
+            return ((Vector2Int) from).ManhattanDistance(to) < distance + 1;
         }
     }
 }
