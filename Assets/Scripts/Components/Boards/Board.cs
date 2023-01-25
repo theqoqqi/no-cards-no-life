@@ -32,10 +32,10 @@ namespace Components.Boards {
             var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
 
             if (IsOnBoard(mouseCellPosition)) {
-                gridTilemap.SetSelectedCell((Vector2Int) mouseCellPosition);
+                gridTilemap.SetHoveredCell((Vector2Int) mouseCellPosition);
             }
             else {
-                gridTilemap.ClearSelectedCell();
+                gridTilemap.ClearHoveredCell();
             }
         }
 

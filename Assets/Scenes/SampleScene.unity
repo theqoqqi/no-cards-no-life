@@ -296,7 +296,7 @@ MonoBehaviour:
   terrainTilemap: {fileID: 576062537}
   gridTile: {fileID: 11400000, guid: 4c0a114a1b71fa14c9c45d45c34531e8, type: 2}
   selectableTile: {fileID: 11400000, guid: f2869ae91b54f01498801df2183f0a09, type: 2}
-  selectedTile: {fileID: 11400000, guid: 2866d290df5f83844838e958133ad63e, type: 2}
+  hoveredSelectableTile: {fileID: 11400000, guid: 2866d290df5f83844838e958133ad63e, type: 2}
 --- !u!483693784 &505968523
 TilemapRenderer:
   m_ObjectHideFlags: 0
