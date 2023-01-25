@@ -10,9 +10,13 @@ namespace Components.Entities.Parts {
 
         [SerializeField] private Heart heartPrefab;
 
-        [SerializeField] private float spacing = 0.2f;
+        [SerializeField] private float spacing = 0.25f; // Сделать heart size Мб
 
         [SerializeField] private float maxSpace = 1;
+
+        [SerializeField] private Vector3 pivot;
+
+        [SerializeField] private float scale = 1;
 
         private readonly IList<Heart> hearts = new List<Heart>();
 
@@ -52,6 +56,7 @@ namespace Components.Entities.Parts {
             var heart = Instantiate(heartPrefab, transform);
 
             hearts.Add(heart);
+            heart.EasingTransform.TargetLocalScale = Vector3.one * scale;
         }
 
         private void RemoveHeart() {
@@ -83,13 +88,14 @@ namespace Components.Entities.Parts {
             }
 
             var totalWidth = MathF.Min(maxSpace, spacing * (heartCount - 1));
+            var totalHeight = spacing;
             var step = Vector3.right * (totalWidth / (heartCount - 1));
-            var firstPosition = new Vector3(-totalWidth / 2, 0);
+            var firstPosition = new Vector3(pivot.x * -totalWidth, pivot.y * -totalHeight);
 
             var positions = new Vector3[heartCount];
 
             for (var i = 0; i < heartCount; i++) {
-                positions[i] = firstPosition + step * i;
+                positions[i] = (firstPosition + step * i) * scale;
             }
 
             return positions;

@@ -175,5 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: {fileID: 8795508817018498555}
   heartPrefab: {fileID: 4800812376977163918, guid: 979eaf88e1e939d4aa55a1ad1261aaf8, type: 3}
-  spacing: 0.2
-  maxSpace: 1
+  spacing: 0.25
+  maxSpace: 0.8
+  pivot: {x: 0.5, y: 0, z: 0}
+  scale: 1

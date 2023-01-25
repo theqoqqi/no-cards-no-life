@@ -14,7 +14,7 @@ namespace Components.Cards {
         [SerializeField] private float maxStepDistance;
 
         [SerializeField] private float maxTotalDistance;
-
+        
         private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
 
         private void Start() {
