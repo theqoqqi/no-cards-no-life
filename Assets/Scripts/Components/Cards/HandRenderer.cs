@@ -123,6 +123,8 @@ namespace Components.Cards {
 
             var maxRotationStep = ChordLengthToAngle(maxStepDistance);
             var maxRotationSpread = ChordLengthToAngle(maxTotalDistance);
+            // Тут должно быть (cardCount - 1), чтобы отступы между картами были одинаковыми при любом количестве карт,
+            // но так, как оно работает сейчас, мне нравится даже больше. Чем меньше карт, тем больше между ними отступ.
             var totalAngle = Mathf.Min(cardCount * maxRotationStep, maxRotationSpread);
             var firstAngle = -totalAngle / 2;
             var rotationStep = totalAngle / (cardCount - 1);
