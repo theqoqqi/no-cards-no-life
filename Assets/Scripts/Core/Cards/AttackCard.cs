@@ -24,5 +24,9 @@ namespace Core.Cards {
                     .Select(enemy => (Vector2Int) enemy.CellPosition)
                     .Where(cellPosition => IsInRange(board.Player, cellPosition, maxDistance));
         }
+
+        public override void Use(Board board, Vector3Int cellPosition) {
+            
+        }
     }
 }

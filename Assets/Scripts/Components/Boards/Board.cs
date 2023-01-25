@@ -38,6 +38,8 @@ namespace Components.Boards {
             entityGrid = GetComponentInChildren<EntityGrid>();
             mainCamera = FindObjectOfType<MainCamera>();
             player = FindObjectOfType<Player>();
+
+            passabilityGrid = new BoardPassabilityGrid(this);
         }
 
         private void Update() {
@@ -52,13 +54,13 @@ namespace Components.Boards {
         }
 
         private void OnEnable() {
-            GameEvents.Instance.On<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.On<CardReleasedOnBoardEvent>(OnCardReleasedOnBoard);
             GameEvents.Instance.On<CardDraggedToBoardEvent>(OnCardDraggedToBoard);
             GameEvents.Instance.On<CardDraggedFromBoardEvent>(OnCardDraggedFromBoard);
         }
 
         private void OnDisable() {
-            GameEvents.Instance.Off<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.Off<CardReleasedOnBoardEvent>(OnCardReleasedOnBoard);
             GameEvents.Instance.Off<CardDraggedToBoardEvent>(OnCardDraggedToBoard);
             GameEvents.Instance.Off<CardDraggedFromBoardEvent>(OnCardDraggedFromBoard);
         }
@@ -73,8 +75,24 @@ namespace Components.Boards {
             gridTilemap.ClearSelectableCells();
         }
 
-        private void OnCardUsed(CardUsedEvent e) {
-            Game.Instance.GameState.CurrentHand.RemoveCard(e.Card);
+        private void OnCardReleasedOnBoard(CardReleasedOnBoardEvent e) {
+            var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
+
+            if (gridTilemap.IsSelectable(mouseCellPosition)) {
+                UseCard(e.Card, mouseCellPosition);
+            }
+            
+            gridTilemap.ClearSelectableCells();
+        }
+
+        private void UseCard(Card card, Vector3Int cellPosition) {
+            Game.Instance.GameState.CurrentHand.RemoveCard(card);
+            
+            GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
+                e.Setup(card);
+            });
+
+            card.Use(this, cellPosition);
         }
 
         public bool IsOnBoard(Vector3Int position) {

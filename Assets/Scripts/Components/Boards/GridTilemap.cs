@@ -62,7 +62,7 @@ namespace Components.Boards {
             return gridTile;
         }
 
-        private bool IsSelectable(Vector3Int cellPosition) {
+        public bool IsSelectable(Vector3Int cellPosition) {
             return selectableCells.Contains((Vector2Int) cellPosition);
         }
 

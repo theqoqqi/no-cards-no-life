@@ -33,7 +33,9 @@ namespace Core.Cards {
         }
 
         public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
-        
+
+        public abstract void Use(Board board, Vector3Int cellPosition);
+
         public readonly struct Corner {
 
             public int Value { get; }
