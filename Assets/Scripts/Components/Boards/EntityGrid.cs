@@ -6,18 +6,16 @@ using UnityEngine;
 namespace Components.Boards {
     public class EntityGrid : MonoBehaviour {
 
-        // ReSharper disable Unity.PerformanceAnalysis
-        private IEnumerable<GridAlignedBody> EnumerateBodies() {
-            return GetComponentsInChildren<GridAlignedBody>();
-        }
-
         public GridAlignedBody GetBodyAtCell(Vector3Int cellPosition) {
-            return EnumerateBodies()
-                    .FirstOrDefault(child => child.isActiveAndEnabled && child.CellPosition == cellPosition);
+            return GetComponentAtCell<GridAlignedBody>(cellPosition);
         }
 
-        public GameObject GetObjectAtCell(Vector3Int cellPosition) {
+        public GameObject GetGameObjectAtCell(Vector3Int cellPosition) {
             return GetBodyAtCell(cellPosition)?.gameObject;
+        }
+
+        public T GetObjectAtCell<T>(Vector3Int cellPosition) where T : EntityBehaviour {
+            return GetComponentAtCell<T>(cellPosition);
         }
 
         public bool IsCellEmpty(Vector3Int cellPosition) {
@@ -31,6 +29,16 @@ namespace Components.Boards {
         }
 
         public IEnumerable<T> GetObjectsOfType<T>() {
+            return GetComponentsInChildren<T>();
+        }
+
+        private T GetComponentAtCell<T>(Vector3Int cellPosition) where T : EntityBehaviour {
+            return Enumerate<T>()
+                    .FirstOrDefault(child => child.isActiveAndEnabled && child.CellPosition == cellPosition);
+        }
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        private IEnumerable<T> Enumerate<T>() where T : EntityBehaviour {
             return GetComponentsInChildren<T>();
         }
     }

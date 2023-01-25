@@ -108,8 +108,8 @@ namespace Components.Boards {
             return entityGrid.GetBodyAtCell(cellPosition);
         }
 
-        public bool GetBodyAtCell(Vector3Int cellPosition) {
-            return entityGrid.GetBodyAtCell(cellPosition);
+        public T GetObjectAtCell<T>(Vector3Int cellPosition) where T : EntityBehaviour {
+            return entityGrid.GetObjectAtCell<T>(cellPosition);
         }
 
         public IEnumerable<Enemy> GetEnemies() {
