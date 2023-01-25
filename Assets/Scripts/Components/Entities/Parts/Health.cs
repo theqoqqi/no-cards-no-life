@@ -6,6 +6,8 @@ namespace Components.Entities.Parts {
 
         public readonly UnityEvent<DamageDetails> OnEntityKilled = new UnityEvent<DamageDetails>();
 
+        public readonly UnityEvent<int> OnHitPointsChanged = new UnityEvent<int>();
+
         private int hitPoints;
 
         [SerializeField] private int maxHitPoints;
@@ -43,7 +45,7 @@ namespace Components.Entities.Parts {
         }
 
         public void ApplyDamage(DamageDetails details) {
-            HitPoints -= details.Damage;
+            ModifyHitPoints(-details.Damage);
 
             if (!IsAlive) {
                 OnEntityKilled.Invoke(details);
@@ -51,7 +53,13 @@ namespace Components.Entities.Parts {
         }
 
         public void ApplyHealing(int healBy) {
-            HitPoints += healBy;
+            ModifyHitPoints(healBy);
+        }
+
+        private void ModifyHitPoints(int modifyBy) {
+            HitPoints += modifyBy;
+
+            OnHitPointsChanged.Invoke(modifyBy);
         }
 
         public void Kill(BaseEntity attacker) {

@@ -2488,6 +2488,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1238417008874437653, guid: 78def83b3d5e77b4dbb947e90782d78d, type: 3}
+      propertyPath: spacing
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1238417008874437653, guid: 78def83b3d5e77b4dbb947e90782d78d, type: 3}
+      propertyPath: maxSpace
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4307811620662755951, guid: 78def83b3d5e77b4dbb947e90782d78d, type: 3}
       propertyPath: m_RootOrder
       value: 1
