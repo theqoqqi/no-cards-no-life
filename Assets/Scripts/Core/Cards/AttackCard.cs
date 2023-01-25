@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Components.Boards;
 using UnityEngine;
 
@@ -9,9 +10,9 @@ namespace Core.Cards {
 
         private readonly int damage;
 
-        public override int TopLeftValue => maxDistance;
+        protected override int TopLeftValue => maxDistance;
 
-        public override int TopRightValue => damage;
+        protected override int TopRightValue => damage;
 
         public AttackCard(int maxDistance, int damage) : base("Attack") {
             this.maxDistance = maxDistance;
@@ -19,13 +20,13 @@ namespace Core.Cards {
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {
-            var cells = new List<Vector2Int>();
-            
-            foreach (var cellPosition in board.Bounds.allPositionsWithin) {
-                cells.Add((Vector2Int) cellPosition);
-            }
+            return board.GetEnemies()
+                    .Select(enemy => (Vector2Int) enemy.CellPosition)
+                    .Where(cellPosition => IsInRange(board.Player, cellPosition, maxDistance));
+        }
 
-            return cells;
+        public override void Use(Board board, Vector3Int cellPosition) {
+            
         }
     }
 }

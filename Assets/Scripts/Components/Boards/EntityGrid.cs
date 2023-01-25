@@ -8,7 +8,7 @@ namespace Components.Boards {
 
         // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerable<GridAlignedBody> EnumerateBodies() {
-            return GetComponentsInChildren<GridAlignedBody>().AsEnumerable();
+            return GetComponentsInChildren<GridAlignedBody>();
         }
 
         public GridAlignedBody GetBodyAtCell(Vector3Int cellPosition) {
@@ -35,6 +35,10 @@ namespace Components.Boards {
                     .FirstOrDefault(child => child.isActiveAndEnabled
                                              && child.TargetCellPosition == cellPosition
                                              && child.TargetCellPosition != child.CellPosition);
+        }
+
+        public IEnumerable<T> GetObjectsOfType<T>() {
+            return GetComponentsInChildren<T>();
         }
     }
 }

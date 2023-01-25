@@ -160,7 +160,7 @@ namespace Components.Cards {
             easingTransform.TargetLocalRotation = Quaternion.identity;
 
             if (IsMouseInUseArea()) {
-                GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
+                GameEvents.Instance.Dispatch<CardReleasedOnBoardEvent>(e => {
                     e.Setup(card);
                 });
             }

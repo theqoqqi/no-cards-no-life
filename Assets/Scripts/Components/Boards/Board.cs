@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Components.Entities;
 using Components.Scenes;
+using Core.Cards;
 using Core.Events;
+using Core.Pathfinding;
 using Core.Util;
 using UnityEngine;
 
@@ -15,6 +18,14 @@ namespace Components.Boards {
 
         private MainCamera mainCamera;
 
+        private BoardPassabilityGrid passabilityGrid;
+
+        public BoardPassabilityGrid PassabilityGrid => passabilityGrid;
+
+        private Player player;
+
+        public Player Player => player;
+
         public Vector3 CenterPosition => terrainTilemap.CenterPosition;
 
         public int Height => terrainTilemap.Height;
@@ -26,7 +37,9 @@ namespace Components.Boards {
             gridTilemap = GetComponentInChildren<GridTilemap>();
             entityGrid = GetComponentInChildren<EntityGrid>();
             mainCamera = FindObjectOfType<MainCamera>();
-            // тест
+            player = FindObjectOfType<Player>();
+
+            passabilityGrid = new BoardPassabilityGrid(this);
         }
 
         private void Update() {
@@ -41,13 +54,13 @@ namespace Components.Boards {
         }
 
         private void OnEnable() {
-            GameEvents.Instance.On<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.On<CardReleasedOnBoardEvent>(OnCardReleasedOnBoard);
             GameEvents.Instance.On<CardDraggedToBoardEvent>(OnCardDraggedToBoard);
             GameEvents.Instance.On<CardDraggedFromBoardEvent>(OnCardDraggedFromBoard);
         }
 
         private void OnDisable() {
-            GameEvents.Instance.Off<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.Off<CardReleasedOnBoardEvent>(OnCardReleasedOnBoard);
             GameEvents.Instance.Off<CardDraggedToBoardEvent>(OnCardDraggedToBoard);
             GameEvents.Instance.Off<CardDraggedFromBoardEvent>(OnCardDraggedFromBoard);
         }
@@ -62,8 +75,24 @@ namespace Components.Boards {
             gridTilemap.ClearSelectableCells();
         }
 
-        private void OnCardUsed(CardUsedEvent e) {
-            Game.Instance.GameState.CurrentHand.RemoveCard(e.Card);
+        private void OnCardReleasedOnBoard(CardReleasedOnBoardEvent e) {
+            var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
+
+            if (gridTilemap.IsSelectable(mouseCellPosition)) {
+                UseCard(e.Card, mouseCellPosition);
+            }
+            
+            gridTilemap.ClearSelectableCells();
+        }
+
+        private void UseCard(Card card, Vector3Int cellPosition) {
+            Game.Instance.GameState.CurrentHand.RemoveCard(card);
+            
+            GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
+                e.Setup(card);
+            });
+
+            card.Use(this, cellPosition);
         }
 
         public bool IsOnBoard(Vector3Int position) {
@@ -73,6 +102,18 @@ namespace Components.Boards {
         public bool IsCellPassable(Vector3Int cellPosition) {
             return terrainTilemap.IsCellPassable(cellPosition)
                    && entityGrid.IsCellPassable(cellPosition);
+        }
+
+        public bool HasBodyAtCell(Vector3Int cellPosition) {
+            return entityGrid.GetBodyAtCell(cellPosition);
+        }
+
+        public bool GetBodyAtCell(Vector3Int cellPosition) {
+            return entityGrid.GetBodyAtCell(cellPosition);
+        }
+
+        public IEnumerable<Enemy> GetEnemies() {
+            return entityGrid.GetObjectsOfType<Enemy>();
         }
     }
 }
