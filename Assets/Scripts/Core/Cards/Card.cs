@@ -29,7 +29,7 @@ namespace Core.Cards {
                 return null;
             }
 
-            return new Corner(TopLeftValue, metadata.BackgroundSprite, metadata.TypeSprite);
+            return new Corner(value, metadata.BackgroundSprite, metadata.TypeSprite);
         }
 
         public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
