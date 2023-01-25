@@ -248,7 +248,9 @@ namespace Core.Pathfinding {
         }
 
         // Return a List of Locations representing the found path
-        public IEnumerable<Vector2Int> FindPath() {
+        public IEnumerable<Vector2Int> FindPath(FindOptions options) {
+            SetOptions(options);
+            
             IterateUntilFirstGoal();
 
             while (goals.Count > 0 && foundGoals.Count > 0 && !CanBeUsedAsGoal(foundGoals.Last())) {
