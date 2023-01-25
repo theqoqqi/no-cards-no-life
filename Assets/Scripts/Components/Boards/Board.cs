@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Components.Entities;
 using Components.Scenes;
+using Core.Cards;
 using Core.Events;
+using Core.Pathfinding;
 using Core.Util;
 using UnityEngine;
 
@@ -15,6 +18,14 @@ namespace Components.Boards {
 
         private MainCamera mainCamera;
 
+        private BoardPassabilityGrid passabilityGrid;
+
+        public BoardPassabilityGrid PassabilityGrid => passabilityGrid;
+
+        private Player player;
+
+        public Player Player => player;
+
         public Vector3 CenterPosition => terrainTilemap.CenterPosition;
 
         public int Height => terrainTilemap.Height;
@@ -26,6 +37,7 @@ namespace Components.Boards {
             gridTilemap = GetComponentInChildren<GridTilemap>();
             entityGrid = GetComponentInChildren<EntityGrid>();
             mainCamera = FindObjectOfType<MainCamera>();
+            player = FindObjectOfType<Player>();
         }
 
         private void Update() {
@@ -72,6 +84,18 @@ namespace Components.Boards {
         public bool IsCellPassable(Vector3Int cellPosition) {
             return terrainTilemap.IsCellPassable(cellPosition)
                    && entityGrid.IsCellPassable(cellPosition);
+        }
+
+        public bool HasBodyAtCell(Vector3Int cellPosition) {
+            return entityGrid.GetBodyAtCell(cellPosition);
+        }
+
+        public bool GetBodyAtCell(Vector3Int cellPosition) {
+            return entityGrid.GetBodyAtCell(cellPosition);
+        }
+
+        public IEnumerable<Enemy> GetEnemies() {
+            return entityGrid.GetObjectsOfType<Enemy>();
         }
     }
 }
