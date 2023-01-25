@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Components.Boards;
 using Components.Entities;
 using Core.Util;
@@ -34,7 +35,7 @@ namespace Core.Cards {
 
         public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
 
-        public abstract void Use(Board board, Vector3Int cellPosition);
+        public abstract Task Use(Board board, Vector3Int cellPosition);
 
         public readonly struct Corner {
 

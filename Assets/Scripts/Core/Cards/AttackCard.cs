@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Components.Boards;
+using Components.Entities;
 using UnityEngine;
 
 namespace Core.Cards {
@@ -25,8 +27,11 @@ namespace Core.Cards {
                     .Where(cellPosition => IsInRange(board.Player, cellPosition, maxDistance));
         }
 
-        public override void Use(Board board, Vector3Int cellPosition) {
-            
+        public override async Task Use(Board board, Vector3Int cellPosition) {
+            var enemy = board.GetObjectAtCell<Enemy>((Vector3Int) (Vector2Int) cellPosition);
+            var player = board.Player;
+
+            await player.StartAttack(enemy, damage);
         }
     }
 }
