@@ -26,6 +26,7 @@ namespace Components.Boards {
             gridTilemap = GetComponentInChildren<GridTilemap>();
             entityGrid = GetComponentInChildren<EntityGrid>();
             mainCamera = FindObjectOfType<MainCamera>();
+            // тест
         }
 
         private void Update() {
