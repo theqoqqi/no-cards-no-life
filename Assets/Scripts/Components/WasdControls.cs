@@ -13,7 +13,7 @@ namespace Components {
             board = GetComponentInParent<Board>();
         }
 
-        private void Update() {
+        private async void Update() {
             if (body.IsMoving) {
                 return;
             }
@@ -22,10 +22,10 @@ namespace Components {
             var v = GetVerticalDirection();
 
             if (h.HasValue && CanMoveInDirection(h.Value)) {
-                body.StartMoveTo(h.Value);
+                await body.StartMoveTo(h.Value);
             }
             else if (v.HasValue && CanMoveInDirection(v.Value)) {
-                body.StartMoveTo(v.Value);
+                await body.StartMoveTo(v.Value);
             }
         }
 
