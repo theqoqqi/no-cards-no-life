@@ -21,5 +21,9 @@ namespace Core.Cards {
                 return distance <= maxDistance;
             }));
         }
+
+        public override void Use(Board board, Vector3Int cellPosition) {
+            
+        }
     }
 }
