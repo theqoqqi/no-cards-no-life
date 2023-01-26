@@ -24,6 +24,10 @@ namespace Components.Scenes {
             await SwitchScreen("Scenes/Screens/LevelScreen");
         }
 
+        public async Task LoadLocationMap() {
+            await SwitchScreen("Scenes/Screens/LocationMapScreen");
+        }
+
         public async Task LoadMainMenu() {
             await SwitchScreen("Scenes/Screens/MainMenuScreen");
         }
