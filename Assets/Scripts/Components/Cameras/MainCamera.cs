@@ -1,5 +1,6 @@
-﻿using System;
-using Components.Boards;
+﻿using Components.Boards;
+using Core.Events;
+using Core.Events.Levels;
 using UnityEngine;
 
 namespace Components.Cameras {
@@ -25,11 +26,21 @@ namespace Components.Cameras {
             Camera = GetComponent<Camera>();
         }
 
-        private void Update() {
-            if (!board) { // TODO: заменить на событие типа OnLevelLoaded
-                board = FindObjectOfType<Board>();
-            }
+        private void OnEnable() {
+            GameEvents.Instance.On<LevelLoadedEvent>(OnLevelLoaded);
+        }
+
+        private void OnDisable() {
+            GameEvents.Instance.Off<LevelLoadedEvent>(OnLevelLoaded);
+        }
+
+        private void OnLevelLoaded(LevelLoadedEvent e) {
+            board = FindObjectOfType<Board>();
             
+            Setup();
+        }
+
+        private void Setup() {
             if (board) {
                 Position = board.CenterPosition;
                 SetSize(board.Height);
@@ -42,7 +53,7 @@ namespace Components.Cameras {
         }
 
         private void Adjust(int boardHeight) {
-            transform.position += Vector3.down * boardHeight * 0.25f;
+            transform.position += Vector3.down * (boardHeight * 0.25f);
         }
     }
 }
