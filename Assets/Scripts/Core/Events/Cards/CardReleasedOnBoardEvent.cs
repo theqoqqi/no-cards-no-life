@@ -1,6 +1,6 @@
 ﻿using Core.Cards;
 
-namespace Core.Events {
+namespace Core.Events.Cards {
     public class CardReleasedOnBoardEvent : IGameEvent {
 
         public Card Card { get; private set; }

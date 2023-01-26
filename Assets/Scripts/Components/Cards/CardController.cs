@@ -2,6 +2,7 @@
 using Components.Utils;
 using Core.Cards;
 using Core.Events;
+using Core.Events.Cards;
 using UnityEngine;
 
 namespace Components.Cards {

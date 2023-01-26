@@ -3,6 +3,7 @@ using Components.Cameras;
 using Components.Entities;
 using Core.Cards;
 using Core.Events;
+using Core.Events.Cards;
 using Core.Pathfinding;
 using Core.Util;
 using UnityEngine;

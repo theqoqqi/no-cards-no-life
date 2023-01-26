@@ -1,7 +1,7 @@
 ﻿using Core.Cards;
 
-namespace Core.Events {
-    public class CardDraggedToBoardEvent : IGameEvent {
+namespace Core.Events.Cards {
+    public class CardUsedEvent : IGameEvent {
 
         public Card Card { get; private set; }
         
