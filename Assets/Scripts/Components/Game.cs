@@ -1,4 +1,7 @@
-﻿using Core.Cards;
+﻿using System;
+using System.Threading.Tasks;
+using Components.Scenes;
+using Core.Cards;
 using Core.GameStates;
 using UnityEngine;
 
@@ -25,16 +28,38 @@ namespace Components {
 
         public static Game Instance { get; private set; }
 
+        public static bool IsBootstrapDone => Instance;
+
+        public static event Action OnBootstrapDone;
+
+        private static bool loadingFromBootstrap;
+
         public GameState GameState { get; } = new GameState();
 
-        private void Awake() {
+        [SerializeField] private SceneManager sceneManager;
+
+        public SceneManager SceneManager => sceneManager;
+
+        private async void Awake() {
+            if (Instance) {
+                Destroy(gameObject);
+                return;
+            }
+
+            DontDestroyOnLoad(gameObject);
             Instance = this;
-            
+
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
-            
-            
 
+            InitTestDeck();
+
+            if (!loadingFromBootstrap) {
+                await sceneManager.LoadMainMenu();
+            }
+        }
+
+        private void InitTestDeck() {
             var deck = new Deck();
 
             deck.AddCard(new MoveCard(1));
@@ -42,10 +67,24 @@ namespace Components {
             deck.AddCard(new MoveCard(3));
             deck.AddCard(new AttackCard(2, 1));
             deck.AddCard(new AttackCard(1, 2));
-            
+
             // deck.Shuffle();
-            
+
             GameState.CurrentHand = deck;
+        }
+
+        public static async Task<Game> Bootstrap() {
+            loadingFromBootstrap = true;
+            
+            SceneManager.LoadSystemScene();
+
+            while (!Instance) {
+                await Task.Yield();
+            }
+            
+            OnBootstrapDone?.Invoke();
+            
+            return Instance;
         }
     }
 }

@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Components.Entities.Parts {
     public class HealthBar : MonoBehaviour {
 
-        [SerializeField] private Health health;
+        [SerializeField] protected Health health;
 
         [SerializeField] private Heart heartPrefab;
 
-        [SerializeField] private float spacing = 0.25f; // Сделать heart size Мб
+        [SerializeField] private float spacing = 0.25f;
 
         [SerializeField] private float maxSpace = 1;
 
@@ -21,15 +21,21 @@ namespace Components.Entities.Parts {
         private readonly IList<Heart> hearts = new List<Heart>();
 
         private void Start() {
-            StartCoroutine(SetHeartCount(health.HitPoints));
+            if (health) {
+                StartCoroutine(SetHeartCount(health.HitPoints));
+            }
         }
 
         private void OnEnable() {
-            health.OnHitPointsChanged.AddListener(OnHitPointsChanged);
+            if (health) {
+                health.OnHitPointsChanged.AddListener(OnHitPointsChanged);
+            }
         }
 
         private void OnDisable() {
-            health.OnHitPointsChanged.RemoveListener(OnHitPointsChanged);
+            if (health) {
+                health.OnHitPointsChanged.RemoveListener(OnHitPointsChanged);
+            }
         }
 
         private void OnHitPointsChanged(int changedBy) {
