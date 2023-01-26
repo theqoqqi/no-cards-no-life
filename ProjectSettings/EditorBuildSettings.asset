@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Screens/LevelScreen.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Scenes/SystemScene.unity
     guid: 5592fd308335a874a8bed96e45e9c457
   - enabled: 1
     path: Assets/Scenes/Screens/MainMenuScreen.unity
     guid: 471d80fbd3a0df249872ade122b66457
+  - enabled: 1
+    path: Assets/Scenes/Screens/LocationMapScreen.unity
+    guid: 36bcd44081fe6f14abf27f4fc20c1068
+  - enabled: 1
+    path: Assets/Scenes/Screens/LevelScreen.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
