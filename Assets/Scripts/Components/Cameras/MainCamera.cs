@@ -1,7 +1,8 @@
-﻿using Components.Boards;
+﻿using System;
+using Components.Boards;
 using UnityEngine;
 
-namespace Components.Scenes {
+namespace Components.Cameras {
     public class MainCamera : MonoBehaviour {
 
         public Camera Camera { get; private set; }
@@ -22,10 +23,18 @@ namespace Components.Scenes {
         private void Start() {
             board = FindObjectOfType<Board>();
             Camera = GetComponent<Camera>();
+        }
 
-            Position = board.CenterPosition;
-            SetSize(board.Height);
-            Adjust(board.Height);
+        private void Update() {
+            if (!board) { // TODO: заменить на событие типа OnLevelLoaded
+                board = FindObjectOfType<Board>();
+            }
+            
+            if (board) {
+                Position = board.CenterPosition;
+                SetSize(board.Height);
+                Adjust(board.Height);
+            }
         }
 
         private void SetSize(int boardHeight) {
