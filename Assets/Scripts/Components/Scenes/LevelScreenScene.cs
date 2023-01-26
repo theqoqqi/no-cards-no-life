@@ -1,5 +1,5 @@
 ﻿namespace Components.Scenes {
-    public class LevelScreenScene : SceneBehavior {
+    public class LevelScreenScreenScene : ScreenScene {
 
     }
 }
