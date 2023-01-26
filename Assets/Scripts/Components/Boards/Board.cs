@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Components.Cameras;
 using Components.Entities;
-using Components.Scenes;
 using Core.Cards;
 using Core.Events;
 using Core.Pathfinding;

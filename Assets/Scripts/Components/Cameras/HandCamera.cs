@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Components.Scenes {
+namespace Components.Cameras {
     public class HandCamera : MonoBehaviour {
 
         [SerializeField] public new Camera camera;
