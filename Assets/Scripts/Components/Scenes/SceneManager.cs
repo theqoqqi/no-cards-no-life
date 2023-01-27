@@ -23,16 +23,20 @@ namespace Components.Scenes {
             fallbackCamera.enabled = false;
         }
 
-        public async Task LoadLevel(string levelSceneName) {
-            await SwitchScreen("Scenes/Screens/LevelScreen", levelSceneName);
+        public async Task LoadMainMenu() {
+            await SwitchScreen("Scenes/Screens/MainMenuScreen");
         }
 
         public async Task LoadLocationMap() {
             await SwitchScreen("Scenes/Screens/LocationMapScreen");
         }
 
-        public async Task LoadMainMenu() {
-            await SwitchScreen("Scenes/Screens/MainMenuScreen");
+        public async Task LoadLevel(string levelSceneName) {
+            await SwitchScreen("Scenes/Screens/LevelScreen", levelSceneName);
+        }
+
+        public async Task LoadDeathScreen() {
+            await SwitchScreen("Scenes/Screens/DeathScreen");
         }
 
         private async Task SwitchScreen(string sceneName) {

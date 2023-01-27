@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Components.Scenes;
 using Core.Cards;
+using Core.Events;
+using Core.Events.Levels;
 using Core.GameStates;
 using UnityEngine;
 
@@ -57,6 +59,14 @@ namespace Components {
             if (!loadingFromBootstrap) {
                 await sceneManager.LoadMainMenu();
             }
+            
+            GameEvents.Instance.On<LevelDoneEvent>(async e => {
+                await sceneManager.LoadLocationMap();
+            });
+            
+            GameEvents.Instance.On<PlayerDiedEvent>(async e => {
+                await sceneManager.LoadDeathScreen();
+            });
         }
 
         private void InitTestDeck() {
@@ -67,6 +77,8 @@ namespace Components {
             deck.AddCard(new MoveCard(3));
             deck.AddCard(new AttackCard(2, 1));
             deck.AddCard(new AttackCard(1, 2));
+            deck.AddCard(new AttackCard(2, 2));
+            deck.AddCard(new AttackCard(2, 3));
 
             // deck.Shuffle();
 
