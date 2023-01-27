@@ -1031,7 +1031,7 @@ MonoBehaviour:
   - _sceneOB: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
     _name: LevelScreen
     _path: Assets/Scenes/Screens/LevelScreen.unity
-    _buildIndex: 3
+    _buildIndex: 0
 --- !u!4 &513892829
 Transform:
   m_ObjectHideFlags: 0
