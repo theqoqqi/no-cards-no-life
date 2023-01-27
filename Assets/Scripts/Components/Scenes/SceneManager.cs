@@ -14,14 +14,16 @@ namespace Components.Scenes {
 
         [SerializeField] private float fadeDuration = 1;
         
-        private ScreenScene CurrentScreen;
+        private ScreenScene currentScreen;
+
+        private string currentScreenSceneName;
         
         private void Awake() {
             fallbackCamera.enabled = false;
         }
 
-        public async Task LoadLevel() {
-            await SwitchScreen("Scenes/Screens/LevelScreen");
+        public async Task LoadLevel(string levelSceneName) {
+            await SwitchScreen("Scenes/Screens/LevelScreen", levelSceneName);
         }
 
         public async Task LoadLocationMap() {
@@ -32,31 +34,45 @@ namespace Components.Scenes {
             await SwitchScreen("Scenes/Screens/MainMenuScreen");
         }
 
-        public async Task SwitchScreen(string sceneName) {
+        private async Task SwitchScreen(string sceneName) {
+            await SwitchScreen(sceneName, null);
+        }
+
+        private async Task SwitchScreen(string sceneName, string contentSceneName) {
             await FadeOut();
             await UnloadCurrentScreen();
             await LoadSceneByName(sceneName);
+            await LoadContentScene(contentSceneName);
             await FadeIn();
         }
 
         public async Task LoadSceneByName(string sceneName) {
             var asyncOperation = UnitySceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
-            while (!asyncOperation.isDone) {
-                await Task.Yield();
-            }
+            await OnDone(asyncOperation);
 
-            CurrentScreen = FindObjectOfType<ScreenScene>();
+            currentScreen = FindObjectOfType<ScreenScene>();
+            currentScreenSceneName = sceneName;
+        }
+
+        private async Task LoadContentScene(string contentSceneName) {
+            if (contentSceneName != null) {
+                await LoadSceneByName(contentSceneName);
+            }
         }
 
         private async Task UnloadCurrentScreen() {
-            if (!CurrentScreen) {
+            if (!currentScreen) {
                 return;
             }
             
-            CurrentScreen.Unload();
+            currentScreen.Unload();
             
-            await Task.CompletedTask;
+            var asyncOperation = UnitySceneManager.UnloadSceneAsync(currentScreenSceneName);
+
+            await OnDone(asyncOperation);
+            
+            currentScreenSceneName = null;
         }
 
         private async Task FadeOut() {
@@ -67,6 +83,12 @@ namespace Components.Scenes {
         private async Task FadeIn() {
             fallbackCamera.enabled = false;
             await screenFader.FadeIn(fadeDuration);
+        }
+
+        private static async Task OnDone(AsyncOperation operation) {
+            while (!operation.isDone) {
+                await Task.Yield();
+            }
         }
 
         public static void LoadSystemScene() {
