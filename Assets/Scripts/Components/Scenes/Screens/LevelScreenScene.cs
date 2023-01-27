@@ -1,4 +1,4 @@
-﻿namespace Components.Scenes {
+﻿namespace Components.Scenes.Screens {
     public class LevelScreenScene : ScreenScene {
 
     }
