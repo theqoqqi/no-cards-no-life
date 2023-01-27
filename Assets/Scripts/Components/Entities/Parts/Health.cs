@@ -8,6 +8,8 @@ namespace Components.Entities.Parts {
 
         public readonly UnityEvent<int> OnHitPointsChanged = new UnityEvent<int>();
 
+        private BaseEntity owner;
+
         private int hitPoints;
 
         [SerializeField] private int maxHitPoints;
@@ -42,9 +44,21 @@ namespace Components.Entities.Parts {
             if (hitPoints == 0) {
                 hitPoints = maxHitPoints;
             }
+
+            owner = GetComponent<BaseEntity>();
         }
 
-        public void ApplyDamage(DamageDetails details) {
+        public void Kill(BaseEntity attacker) {
+            ApplyDamage(attacker, int.MaxValue);
+        }
+
+        public void ApplyDamage(BaseEntity attacker, int damage) {
+            var damageDetails = new DamageDetails(attacker, owner, damage);
+            
+            ApplyDamage(damageDetails);
+        }
+
+        private void ApplyDamage(DamageDetails details) {
             ModifyHitPoints(-details.Damage);
 
             if (!IsAlive) {
@@ -57,25 +71,26 @@ namespace Components.Entities.Parts {
         }
 
         private void ModifyHitPoints(int modifyBy) {
+            var oldHitPoints = HitPoints;
+            
             HitPoints += modifyBy;
 
-            OnHitPointsChanged.Invoke(modifyBy);
-        }
+            var modifiedBy = HitPoints - oldHitPoints;
 
-        public void Kill(BaseEntity attacker) {
-            var details = new DamageDetails(attacker, int.MaxValue);
-
-            ApplyDamage(details);
+            OnHitPointsChanged.Invoke(modifiedBy);
         }
 
         public readonly struct DamageDetails {
 
             public readonly BaseEntity Attacker;
 
+            public readonly BaseEntity Victim;
+
             public readonly int Damage;
 
-            public DamageDetails(BaseEntity attacker, int damage) {
+            public DamageDetails(BaseEntity attacker, BaseEntity victim, int damage) {
                 Attacker = attacker;
+                Victim = victim;
                 Damage = damage;
             }
         }

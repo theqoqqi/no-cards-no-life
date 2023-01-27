@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Components.Entities {
+﻿namespace Components.Entities {
     public class Player : BaseEntity {
 
     }

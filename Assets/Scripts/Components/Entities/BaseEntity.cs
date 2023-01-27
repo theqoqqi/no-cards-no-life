@@ -14,9 +14,7 @@ namespace Components.Entities {
         public GridAlignedBody Body => body;
 
         public virtual Task StartAttack(BaseEntity victim, int damage) {
-            var damageDetails = new Health.DamageDetails(this, damage);
-
-            victim.health.ApplyDamage(damageDetails);
+            victim.health.ApplyDamage(this, damage);
             
             return Task.CompletedTask;
         }
