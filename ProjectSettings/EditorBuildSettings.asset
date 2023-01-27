@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Screens/LevelScreen.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Screens/DeathScreen.unity
+    guid: 542b462550226ca4890fd595dd1685a7
+  - enabled: 1
     path: Assets/Scenes/Levels/TestLevel.unity
     guid: dc2afc6ec8e80994c8ed67dde5b2856d
   m_configObjects: {}
