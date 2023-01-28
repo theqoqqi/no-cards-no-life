@@ -47,7 +47,6 @@ namespace Components.Levels {
         }
 
         private void OnPlayerKilled(Health.DamageDetails damageDetails) {
-            Debug.Log("OnPlayerKilled");
             GameEvents.Instance.Dispatch<PlayerDiedEvent>(e => {
                 e.Setup(this);
             });
