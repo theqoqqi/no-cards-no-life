@@ -2109,6 +2109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1947647454}
   - component: {fileID: 1947647455}
+  - component: {fileID: 1947647457}
   - component: {fileID: 1947647456}
   m_Layer: 0
   m_Name: Level
@@ -2145,6 +2146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07511cfff0d8483ba83139bd07a0fdc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatSystem: {fileID: 1947647457}
 --- !u!114 &1947647456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2157,6 +2159,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e120681b84471888573e0dad97cd83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1947647457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947647453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b03d8fc46d3d49a7b828f13501bb815c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 463619161}
+  delayBetweenTurns: 0.5
 --- !u!1001 &2169300052155438203
 PrefabInstance:
   m_ObjectHideFlags: 0

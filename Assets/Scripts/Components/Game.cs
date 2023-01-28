@@ -64,7 +64,7 @@ namespace Components {
                 await sceneManager.LoadLocationMap();
             });
             
-            GameEvents.Instance.On<PlayerDiedEvent>(async e => {
+            GameEvents.Instance.On<LevelFailedEvent>(async e => {
                 await sceneManager.LoadDeathScreen();
             });
         }

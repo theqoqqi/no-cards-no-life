@@ -2,7 +2,7 @@
 using System.Linq;
 using Components.Cameras;
 using Components.Entities;
-using Core.Cards;
+using Components.Combats;
 using Core.Events;
 using Core.Events.Cards;
 using Core.Pathfinding;
@@ -27,6 +27,8 @@ namespace Components.Boards {
         private Player player;
 
         public Player Player => player;
+        
+        public IEnumerable<TurnPerformer> TurnPerformers => entityGrid.GetObjectsOfType<TurnPerformer>();
 
         public Vector3 CenterPosition => terrainTilemap.CenterPosition;
 
@@ -81,20 +83,12 @@ namespace Components.Boards {
             var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
 
             if (gridTilemap.IsSelectable(mouseCellPosition)) {
-                UseCard(e.Card, mouseCellPosition);
+                GameEvents.Instance.Dispatch<CardReleasedOnSelectableCellEvent>(e2 => {
+                    e2.Setup(e.Card, mouseCellPosition);
+                });
             }
             
             gridTilemap.ClearSelectableCells();
-        }
-
-        private void UseCard(Card card, Vector3Int cellPosition) {
-            Game.Instance.GameState.CurrentHand.RemoveCard(card);
-            
-            GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
-                e.Setup(card);
-            });
-
-            card.Use(this, cellPosition);
         }
 
         public bool IsOnBoard(Vector3Int position) {

@@ -7,6 +7,8 @@ namespace Components.Cards {
 
         [SerializeField] private CardController cardController;
 
+        public CardController CardController => cardController;
+
         [SerializeField] private EasingTransform easingTransform;
 
         private void Awake() {

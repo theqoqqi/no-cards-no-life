@@ -32,6 +32,8 @@ namespace Components.Cards {
 
         private Vector3 grabOffset;
 
+        private bool isInteractable = true;
+
         private bool isHovered;
 
         private bool isGrabbed;
@@ -150,12 +152,20 @@ namespace Components.Cards {
         }
 
         private void OnMouseDown() {
+            if (!isInteractable) {
+                return;
+            }
+            
             isGrabbed = true;
             grabOffset = Vector3.up;
             easingTransform.TargetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
         }
 
         private void OnMouseUp() {
+            if (!isInteractable || !isGrabbed) {
+                return;
+            }
+            
             isGrabbed = false;
             easingTransform.TargetLocalPosition = Vector3.zero;
             easingTransform.TargetLocalRotation = Quaternion.identity;
@@ -173,6 +183,10 @@ namespace Components.Cards {
             actionSpriteRenderer.sprite = card.ActionSprite;
             topLeftCorner.Setup(card.TopLeft);
             topRightCorner.Setup(card.TopRight);
+        }
+
+        public void SetInteractable(bool isInteractable) {
+            this.isInteractable = isInteractable;
         }
 
         private Vector3 GetLocalMousePosition() {

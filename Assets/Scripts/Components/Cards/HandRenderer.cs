@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Core.Cards;
 using UnityEngine;
@@ -16,6 +15,8 @@ namespace Components.Cards {
         [SerializeField] private float maxTotalDistance;
         
         private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
+        
+        private IEnumerable<CardController> CardControllers => cardContainers.Values.Select(cc => cc.CardController);
 
         private void Start() {
             var deck = Game.Instance.GameState.CurrentHand;
@@ -55,6 +56,12 @@ namespace Components.Cards {
         private void ClearCards() {
             foreach (var card in cardContainers.Keys) {
                 RemoveCard(card);
+            }
+        }
+
+        public void SetInteractable(bool isInteractable) {
+            foreach (var cardController in CardControllers) {
+                cardController.SetInteractable(isInteractable);
             }
         }
 

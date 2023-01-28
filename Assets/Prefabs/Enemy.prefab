@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6092934451005401324}
   - component: {fileID: 9044184066490645504}
   - component: {fileID: 8795508817018498555}
+  - component: {fileID: 1449425602176260960}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 8795508817018498555}
-  body: {fileID: 0}
+  body: {fileID: 6092934451005401324}
 --- !u!114 &8795508817018498555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +130,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoints: 5
   isInvulnerable: 0
+--- !u!114 &1449425602176260960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208026613403845372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055d8df801b44d5497cf40c54c4fba5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entity: {fileID: 9044184066490645504}
+  enemy: {fileID: 9044184066490645504}
 --- !u!1 &3364411770934469390
 GameObject:
   m_ObjectHideFlags: 0
