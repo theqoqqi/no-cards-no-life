@@ -11,6 +11,10 @@ namespace Core.Cards {
 
         public IEnumerable<Card> Cards => cards;
 
+        public int Size => cards.Count;
+
+        public bool IsEmpty => Size == 0;
+
         public event Action<Card> CardAdded;
         
         public event Action<Card> CardRemoved;
@@ -37,12 +41,36 @@ namespace Core.Cards {
             };
         }
 
+        public Deck Clone() {
+            return new Deck(cards);
+        }
+
         public void AddCard(Card card) {
             cards.Add(card);
         }
 
         public void RemoveCard(Card card) {
             cards.Remove(card);
+        }
+
+        public Card TakeCard() {
+            if (cards.Count == 0) {
+                return null;
+            }
+
+            return ConsumeCard(0);
+        }
+
+        private Card ConsumeCard(int index) {
+            var card = GetCard(index);
+            
+            RemoveCard(card);
+            
+            return card;
+        }
+
+        private Card GetCard(int index) {
+            return cards[index];
         }
 
         public void Shuffle() {

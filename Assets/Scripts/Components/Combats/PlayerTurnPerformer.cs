@@ -43,7 +43,7 @@ namespace Components.Combats {
         }
 
         private async Task UseCard(Card card, Vector3Int cellPosition) {
-            Game.Instance.GameState.CurrentHand.RemoveCard(card);
+            Game.Instance.GameState.CurrentRun.Combat.Hand.RemoveCard(card);
 
             await card.Use(Board, cellPosition);
             

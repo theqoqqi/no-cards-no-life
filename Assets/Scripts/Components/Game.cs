@@ -6,6 +6,7 @@ using Core.Events;
 using Core.Events.Levels;
 using Core.GameStates;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Components {
     public class Game : MonoBehaviour {
@@ -55,18 +56,42 @@ namespace Components {
             Application.targetFrameRate = 60;
 
             InitTestDeck();
+            GameState.StartFirstRun();
 
             if (!loadingFromBootstrap) {
                 await sceneManager.LoadMainMenu();
             }
             
             GameEvents.Instance.On<LevelDoneEvent>(async e => {
+                var newCard = CreateRandomCard();
+                
+                GameState.StarterDeck.AddCard(newCard);
+                
                 await sceneManager.LoadLocationMap();
             });
             
             GameEvents.Instance.On<LevelFailedEvent>(async e => {
+                var newCard = CreateRandomCard();
+
+                GameState.StarterDeck.AddCard(newCard);
+                GameState.StartNewRun();
+
                 await sceneManager.LoadDeathScreen();
             });
+        }
+
+        private static Card CreateRandomCard() {
+            if (Random.Range(0, 2) == 0) {
+                var maxDistance = Random.Range(1, 4);
+
+                return new MoveCard(maxDistance);
+            }
+            else {
+                var maxDistance = Random.Range(1, 3);
+                var damage = Random.Range(1, 3) + Random.Range(0, 2);
+
+                return new AttackCard(maxDistance, damage);
+            }
         }
 
         private void LateUpdate() {
@@ -78,15 +103,9 @@ namespace Components {
 
             deck.AddCard(new MoveCard(1));
             deck.AddCard(new MoveCard(2));
-            deck.AddCard(new MoveCard(3));
-            deck.AddCard(new AttackCard(2, 1));
-            deck.AddCard(new AttackCard(1, 2));
-            deck.AddCard(new AttackCard(2, 2));
-            deck.AddCard(new AttackCard(2, 3));
+            deck.AddCard(new AttackCard(1, 1));
 
-            // deck.Shuffle();
-
-            GameState.CurrentHand = deck;
+            GameState.FirstRunDeck = deck;
         }
 
         public static async Task<Game> Bootstrap() {

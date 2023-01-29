@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core.Cards;
+using Core.Events;
+using Core.Events.Levels;
 using UnityEngine;
 
 namespace Components.Cards {
@@ -13,13 +15,23 @@ namespace Components.Cards {
         [SerializeField] private float maxStepDistance;
 
         [SerializeField] private float maxTotalDistance;
-        
+
         private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
         
         private IEnumerable<CardController> CardControllers => cardContainers.Values.Select(cc => cc.CardController);
 
-        private void Start() {
-            var deck = Game.Instance.GameState.CurrentHand;
+        private void OnEnable() {
+            GameEvents.Instance.On<CombatStartedEvent>(OnCombatStarted);
+            GameEvents.Instance.On<CombatFinishedEvent>(OnCombatFinished);
+        }
+
+        private void OnDisable() {
+            GameEvents.Instance.Off<CombatStartedEvent>(OnCombatStarted);
+            GameEvents.Instance.Off<CombatFinishedEvent>(OnCombatFinished);
+        }
+
+        private void OnCombatStarted(CombatStartedEvent e) {
+            var deck = Game.Instance.GameState.CurrentRun.Combat.Hand;
             
             SetCurrentDeck(deck);
             AdjustCards();
@@ -28,8 +40,8 @@ namespace Components.Cards {
             deck.CardRemoved += OnCardRemoved;
         }
 
-        private void OnDestroy() {
-            var deck = Game.Instance.GameState.CurrentHand;
+        private void OnCombatFinished(CombatFinishedEvent e) {
+            var deck = Game.Instance.GameState.CurrentRun.Combat.Hand;
             
             deck.CardAdded -= OnCardAdded;
             deck.CardRemoved -= OnCardRemoved;
@@ -47,7 +59,7 @@ namespace Components.Cards {
 
         private void SetCurrentDeck(Deck deck) {
             ClearCards();
-            
+
             foreach (var card in deck.Cards) {
                 AddCard(card);
             }

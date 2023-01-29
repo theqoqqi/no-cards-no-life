@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Components.Boards;
+using Components.Combats;
 using Components.Entities;
 using Components.Entities.Parts;
-using Components.Combats;
 using Core.Events;
 using Core.Events.Cards;
 using Core.Events.Levels;
@@ -18,7 +17,9 @@ namespace Components.Levels {
 
         private void Start() {
             combatSystem.StartCombat();
-            
+            Game.Instance.GameState.CurrentRun.StartNewCombat();
+            Game.Instance.GameState.CurrentRun.Combat.TakeAllCards();
+
             GameEvents.Instance.Enqueue<LevelLoadedEvent>().With(this);
         }
 
@@ -51,7 +52,7 @@ namespace Components.Levels {
         }
 
         private void OnCardUsed(CardUsedEvent e) {
-            var count = Game.Instance.GameState.CurrentHand.Cards.Count();
+            var count = Game.Instance.GameState.CurrentRun.Combat.Hand.Size;
 
             if (count == 0) {
                 // TODO: это должно быть сделано иначе. Во-первых, я думал сделать кнопку "Умереть",
