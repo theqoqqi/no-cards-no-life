@@ -69,6 +69,10 @@ namespace Components {
             });
         }
 
+        private void LateUpdate() {
+            GameEvents.Instance.DispatchEnqueuedEvents();
+        }
+
         private void InitTestDeck() {
             var deck = new Deck();
 
