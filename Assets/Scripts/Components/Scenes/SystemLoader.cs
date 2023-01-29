@@ -17,10 +17,10 @@ namespace Components.Scenes {
             var sceneManager = game.SceneManager;
 
             foreach (var dependency in dependencies) {
-                await sceneManager.LoadSceneByName(dependency.Name);
+                await sceneManager.AutoLoadScene(dependency.Name);
             }
             
-            await sceneManager.LoadSceneByName(sceneName);
+            await sceneManager.AutoLoadScene(sceneName);
         }
     }
 }
