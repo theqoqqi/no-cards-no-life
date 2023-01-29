@@ -203,7 +203,7 @@ namespace Core.Pathfinding {
 
                     continue;
                 }
-                
+
                 // If there's no cost assigned to the neighbor yet, or if the new
                 // cost is lower than the assigned one, add costFromStart for this neighbor
                 if (costSoFar.ContainsKey(neighbor) && !(costFromStart < costSoFar[neighbor])) {
@@ -226,7 +226,7 @@ namespace Core.Pathfinding {
 
         public IEnumerable<Vector2Int> FindPositions(FindOptions options) {
             SetOptions(options);
-            
+
             IterateUntilFrontier();
 
             cameFrom.Remove(start);
@@ -250,7 +250,7 @@ namespace Core.Pathfinding {
         // Return a List of Locations representing the found path
         public IEnumerable<Vector2Int> FindPath(FindOptions options) {
             SetOptions(options);
-            
+
             IterateUntilFirstGoal();
 
             while (goals.Count > 0 && foundGoals.Count > 0 && !CanBeUsedAsGoal(foundGoals.Last())) {
@@ -323,7 +323,7 @@ namespace Core.Pathfinding {
             return others.Select(b => Heuristic(a, b)).Average();
         }
 
-        public readonly struct FindOptions {
+        public class FindOptions {
 
             public readonly Func<Vector2Int, float, bool> commonPredicate;
 
@@ -331,20 +331,14 @@ namespace Core.Pathfinding {
 
             public readonly Func<Vector2Int, bool> targetPredicate;
 
-            public FindOptions(Func<Vector2Int, float, bool> commonPredicate) {
-                this.commonPredicate = commonPredicate;
-                passabilityPredicate = _ => true;
-                targetPredicate = _ => true;
-            }
-
             public FindOptions(
-                    Func<Vector2Int, float, bool> commonPredicate,
-                    Func<Vector2Int, bool> passabilityPredicate,
-                    Func<Vector2Int, bool> targetPredicate
+                    Func<Vector2Int, float, bool> commonPredicate = null,
+                    Func<Vector2Int, bool> passabilityPredicate = null,
+                    Func<Vector2Int, bool> targetPredicate = null
             ) {
-                this.commonPredicate = commonPredicate;
-                this.passabilityPredicate = passabilityPredicate;
-                this.targetPredicate = targetPredicate;
+                this.commonPredicate = commonPredicate ?? ((_, _) => true);
+                this.passabilityPredicate = passabilityPredicate ?? (_ => true);
+                this.targetPredicate = targetPredicate ?? (_ => true);
             }
         }
     }

@@ -24,25 +24,15 @@ namespace Core.Cards {
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {
-            var search = new AStarSearch(board.PassabilityGrid, board.Player.CellPosition);
-
-            return search.FindPositions(findOptions);
+            return board.FindPositions(board.Player, findOptions);
         }
 
         public override async Task Use(Board board, Vector3Int cellPosition) {
-            var positions = FindPath(board, cellPosition);
+            var positions = board.FindPath(board.Player, cellPosition, findOptions);
 
             foreach (var position in positions) {
                 await board.Player.Body.StartMoveTo(position);
             }
-        }
-
-        private IEnumerable<Vector3> FindPath(Board board, Vector3Int cellPosition) {
-            var search = new AStarSearch(board.PassabilityGrid, board.Player.CellPosition, new[] {cellPosition});
-            
-            return search.FindPath(findOptions)
-                    .Skip(1)
-                    .Select(position => ((Vector3Int) position).CellToWorld());
         }
     }
 }

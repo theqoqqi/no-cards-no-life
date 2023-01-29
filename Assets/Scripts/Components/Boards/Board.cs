@@ -113,5 +113,46 @@ namespace Components.Boards {
         public bool HasEnemies() {
             return GetEnemies().Any();
         }
+
+        public IEnumerable<Vector3> FindPath(BaseEntity fromEntity, BaseEntity toEntity, AStarSearch.FindOptions findOptions) {
+            return FindPath(fromEntity.CellPosition, toEntity.CellPosition, findOptions);
+        }
+
+        public IEnumerable<Vector3> FindPath(BaseEntity fromEntity, Vector3Int to, AStarSearch.FindOptions findOptions) {
+            return FindPath(fromEntity.CellPosition, to, findOptions);
+        }
+
+        public IEnumerable<Vector3> FindPath(Vector3Int from, Vector3Int to, AStarSearch.FindOptions findOptions) {
+            return FindPath(from, new[] {to}, findOptions);
+        }
+
+        public IEnumerable<Vector3> FindPath(Vector3Int from, IEnumerable<Vector3Int> to, AStarSearch.FindOptions findOptions) {
+            var search = new AStarSearch(PassabilityGrid, from, to);
+            
+            return search.FindPath(findOptions)
+                    .Skip(1)
+                    .Select(position => ((Vector3Int) position).CellToWorld());
+        }
+
+        public IEnumerable<Vector2Int> FindPositions(BaseEntity originEntity, AStarSearch.FindOptions findOptions) {
+            return FindPositions(originEntity.CellPosition, findOptions);
+        }
+
+        public IEnumerable<Vector2Int> FindPositions(Vector3Int origin, AStarSearch.FindOptions findOptions) {
+            var search = new AStarSearch(PassabilityGrid, origin);
+
+            return search.FindPositions(findOptions);
+        }
+
+        public static int GetDistanceBetween(Enemy enemy, Player boardPlayer) {
+            return GetDistanceBetween(enemy.CellPosition, boardPlayer.CellPosition);
+        }
+
+        public static int GetDistanceBetween(Vector3Int a, Vector3Int b) {
+            var dx = Mathf.Abs(a.x - b.x);
+            var dy = Mathf.Abs(a.y - b.y);
+
+            return Mathf.Max(dx, dy);
+        }
     }
 }

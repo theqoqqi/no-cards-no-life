@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using Components.Boards;
 using Components.Entities;
 using Core.Events;
 using Core.Events.Levels;
-using Core.Util;
+using Core.Pathfinding;
 using UnityEngine;
 
 namespace Components.Combats {
@@ -23,10 +24,25 @@ namespace Components.Combats {
             }
 
             await Perform(async () => {
-                // TODO: ИИ прописать
-                await enemy.Body.StartMoveTo(Direction.Right);
-                Debug.Log("Dummy enemy turn performed");
-                await Task.CompletedTask;
+                // TODO: Временный ИИ. Нужно переписать, как определюсь с поведением врагов.
+                var moveSpeed = 2;
+                var attackRange = 1;
+                var attackDamage = 1;
+
+                var distanceToPlayer = Board.GetDistanceBetween(enemy, Board.Player);
+
+                if (distanceToPlayer > attackRange) {
+                    var findOptions = new AStarSearch.FindOptions();
+                    var pathToPlayer = Board.FindPath(enemy, Board.Player, findOptions);
+                    var path = pathToPlayer.Take(moveSpeed);
+
+                    foreach (var position in path) {
+                        await enemy.Body.StartMoveTo(position);
+                    }
+                }
+                else {
+                    await enemy.StartAttack(Board.Player, attackDamage);
+                }
             });
         }
     }
