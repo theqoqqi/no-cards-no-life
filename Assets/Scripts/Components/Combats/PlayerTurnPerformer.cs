@@ -47,9 +47,7 @@ namespace Components.Combats {
 
             await card.Use(Board, cellPosition);
             
-            GameEvents.Instance.Dispatch<CardUsedEvent>(e => {
-                e.Setup(card);
-            });
+            GameEvents.Instance.Dispatch<CardUsedEvent>().With(card);
         }
     }
 }

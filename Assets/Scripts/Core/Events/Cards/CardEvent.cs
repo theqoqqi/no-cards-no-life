@@ -5,7 +5,7 @@ namespace Core.Events.Cards {
 
         public Card Card { get; private set; }
         
-        public virtual void Setup(Card card) {
+        public virtual void With(Card card) {
             Card = card;
         }
     }

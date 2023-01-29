@@ -6,8 +6,8 @@ namespace Core.Events.Levels {
 
         public TurnInfo TurnInfo { get; private set; }
 
-        public void Setup(BaseEntity entity, TurnInfo turnInfo) {
-            Setup(entity);
+        public void With(BaseEntity entity, TurnInfo turnInfo) {
+            With(entity);
 
             TurnInfo = turnInfo;
         }

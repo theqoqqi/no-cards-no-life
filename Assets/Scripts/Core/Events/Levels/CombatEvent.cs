@@ -5,7 +5,7 @@ namespace Core.Events.Levels {
         
         public CombatSystem CombatSystem { get; private set; }
 
-        public void Setup(CombatSystem combatSystem) {
+        public void With(CombatSystem combatSystem) {
             CombatSystem = combatSystem;
         }
     }

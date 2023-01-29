@@ -19,9 +19,7 @@ namespace Components.Levels {
         private void Start() {
             combatSystem.StartCombat();
             
-            GameEvents.Instance.Dispatch<LevelLoadedEvent>(e => {
-                e.Setup(this);
-            });
+            GameEvents.Instance.Dispatch<LevelLoadedEvent>().With(this);
         }
 
         private void OnEnable() {
@@ -47,9 +45,7 @@ namespace Components.Levels {
         }
 
         private void OnPlayerKilled(Health.DamageDetails damageDetails) {
-            GameEvents.Instance.Dispatch<PlayerDiedEvent>(e => {
-                e.Setup(this);
-            });
+            GameEvents.Instance.Dispatch<PlayerDiedEvent>().With(this);
             
             combatSystem.FinishCombat(CombatResult.Loose);
         }
@@ -79,15 +75,11 @@ namespace Components.Levels {
         }
 
         private void GameOver() {
-            GameEvents.Instance.Dispatch<LevelFailedEvent>(e => {
-                e.Setup(this);
-            });
+            GameEvents.Instance.Dispatch<LevelFailedEvent>().With(this);
         }
 
         private void CompleteLevel() {
-            GameEvents.Instance.Dispatch<LevelDoneEvent>(e => {
-                e.Setup(this);
-            });
+            GameEvents.Instance.Dispatch<LevelDoneEvent>().With(this);
         }
 
         private void SetBoard(Board board) {

@@ -5,7 +5,7 @@ namespace Core.Events.Levels {
         
         public Level Level { get; private set; }
 
-        public void Setup(Level level) {
+        public void With(Level level) {
             Level = level;
         }
     }

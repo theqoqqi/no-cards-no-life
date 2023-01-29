@@ -25,15 +25,11 @@ namespace Components.Combats {
         }
 
         protected async Task Perform(Func<Task> action) {
-            GameEvents.Instance.Dispatch<TurnPerformStartedEvent>(e2 => {
-                e2.Setup(Entity, combatSystem.CurrentTurn);
-            });
+            GameEvents.Instance.Dispatch<TurnPerformStartedEvent>().With(Entity, combatSystem.CurrentTurn);
 
             await action();
 
-            GameEvents.Instance.Dispatch<TurnPerformFinishedEvent>(e2 => {
-                e2.Setup(Entity, combatSystem.CurrentTurn);
-            });
+            GameEvents.Instance.Dispatch<TurnPerformFinishedEvent>().With(Entity, combatSystem.CurrentTurn);
         }
     }
 }

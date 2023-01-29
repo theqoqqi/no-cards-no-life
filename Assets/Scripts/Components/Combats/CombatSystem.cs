@@ -45,9 +45,7 @@ namespace Components.Combats {
             await Task.Delay(Mathf.FloorToInt(delayBetweenTurns * 1000));
             
             if (!isRunning && combatResult.HasValue) {
-                GameEvents.Instance.Dispatch<CombatFinishedEvent>(e2 => {
-                    e2.Setup(this, combatResult.Value);
-                });
+                GameEvents.Instance.Dispatch<CombatFinishedEvent>().With(this, combatResult.Value);
                 
                 return;
             }
@@ -62,9 +60,7 @@ namespace Components.Combats {
             isRunning = true;
             combatResult = null;
             
-            GameEvents.Instance.Dispatch<CombatStartedEvent>(e => {
-                e.Setup(this);
-            });
+            GameEvents.Instance.Dispatch<CombatStartedEvent>().With(this);
             
             Dispatch<TurnStartedEvent>();
         }
@@ -75,9 +71,7 @@ namespace Components.Combats {
         }
         
         private void Dispatch<T>() where T : TurnEvent, new() {
-            GameEvents.Instance.Dispatch<T>(e => {
-                e.Setup(CurrentTurnPerformer.Entity, currentTurn.Clone());
-            });
+            GameEvents.Instance.Dispatch<T>().With(CurrentTurnPerformer.Entity, currentTurn.Clone());
         }
 
         private void SwitchTurn() {

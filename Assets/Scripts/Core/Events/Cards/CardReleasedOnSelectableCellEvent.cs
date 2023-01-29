@@ -6,8 +6,8 @@ namespace Core.Events.Cards {
 
         public Vector3Int CellPosition { get; private set; }
 
-        public void Setup(Card card, Vector3Int cellPosition) {
-            base.Setup(card);
+        public void With(Card card, Vector3Int cellPosition) {
+            base.With(card);
 
             CellPosition = cellPosition;
         }

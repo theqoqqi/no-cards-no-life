@@ -5,7 +5,7 @@ namespace Core.Events.Levels {
         
         public BaseEntity Entity { get; private set; }
 
-        public void Setup(BaseEntity entity) {
+        public void With(BaseEntity entity) {
             Entity = entity;
         }
     }
