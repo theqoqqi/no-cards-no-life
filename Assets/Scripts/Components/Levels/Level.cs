@@ -41,7 +41,7 @@ namespace Components.Levels {
         }
 
         private void OnEntityDestroyed(EntityDestroyedEvent e) {
-            if (e.Entity.GetComponent<Enemy>() && !board.HasEnemies()) {
+            if (e.Entity is Enemy && !board.HasEnemies()) {
                 combatSystem.FinishCombat(CombatResult.Win);
             }
         }
