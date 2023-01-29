@@ -83,7 +83,7 @@ namespace Components.Boards {
             var mouseCellPosition = mainCamera.Camera.ScreenToWorldPoint(Input.mousePosition).WorldToCell();
 
             if (gridTilemap.IsSelectable(mouseCellPosition)) {
-                GameEvents.Instance.Dispatch<CardReleasedOnSelectableCellEvent>().With(e.Card, mouseCellPosition);
+                GameEvents.Instance.Enqueue<CardReleasedOnSelectableCellEvent>().With(e.Card, mouseCellPosition);
             }
             
             gridTilemap.ClearSelectableCells();

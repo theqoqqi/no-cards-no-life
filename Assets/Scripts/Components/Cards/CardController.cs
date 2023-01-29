@@ -67,10 +67,10 @@ namespace Components.Cards {
                 isDraggedToBoard = isMouseInUseArea;
 
                 if (isDraggedToBoard) {
-                    GameEvents.Instance.Dispatch<CardDraggedToBoardEvent>().With(card);
+                    GameEvents.Instance.Enqueue<CardDraggedToBoardEvent>().With(card);
                 }
                 else {
-                    GameEvents.Instance.Dispatch<CardDraggedFromBoardEvent>().With(card);
+                    GameEvents.Instance.Enqueue<CardDraggedFromBoardEvent>().With(card);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace Components.Cards {
             easingTransform.TargetLocalRotation = Quaternion.identity;
 
             if (IsMouseInUseArea()) {
-                GameEvents.Instance.Dispatch<CardReleasedOnBoardEvent>().With(card);
+                GameEvents.Instance.Enqueue<CardReleasedOnBoardEvent>().With(card);
             }
         }
 

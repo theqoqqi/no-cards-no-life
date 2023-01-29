@@ -33,7 +33,7 @@ namespace Components.Entities {
         }
 
         private void OnDestroy() {
-            GameEvents.Instance.Dispatch<EntityDestroyedEvent>().With(this);
+            GameEvents.Instance.Enqueue<EntityDestroyedEvent>().With(this);
         }
 
         private void OnKilled(Health.DamageDetails damageDetails) {

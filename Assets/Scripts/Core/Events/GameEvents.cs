@@ -33,7 +33,7 @@ namespace Core.Events {
             return new T();
         }
 
-        public T Dispatch<T>() where T : IGameEvent, new() {
+        public T Enqueue<T>() where T : IGameEvent, new() {
             var e = NewEvent<T>();
             
             Enqueue(e);
