@@ -24,11 +24,11 @@ namespace Core.Cards {
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {
-            return board.FindPositions(board.Player, findOptions);
+            return board.Pathfinder.FindPositions(board.Player, findOptions);
         }
 
         public override async Task Use(Board board, Vector3Int cellPosition) {
-            var positions = board.FindPath(board.Player, cellPosition, findOptions);
+            var positions = board.Pathfinder.FindPath(board.Player, cellPosition, findOptions);
 
             foreach (var position in positions) {
                 await board.Player.Body.StartMoveTo(position);

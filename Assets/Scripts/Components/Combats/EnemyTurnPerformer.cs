@@ -33,7 +33,7 @@ namespace Components.Combats {
 
                 if (distanceToPlayer > attackRange) {
                     var findOptions = new AStarSearch.FindOptions();
-                    var pathToPlayer = Board.FindPath(enemy, Board.Player, findOptions);
+                    var pathToPlayer = Board.Pathfinder.FindPath(enemy, Board.Player, findOptions);
                     var path = pathToPlayer.Take(moveSpeed);
 
                     foreach (var position in path) {
