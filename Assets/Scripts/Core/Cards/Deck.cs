@@ -11,9 +11,9 @@ namespace Core.Cards {
 
         public IEnumerable<Card> Cards => cards;
 
-        public event Action<Card> OnCardAdded;
+        public event Action<Card> CardAdded;
         
-        public event Action<Card> OnCardRemoved;
+        public event Action<Card> CardRemoved;
 
         public Deck() : this(new List<Card>()) {
 
@@ -25,13 +25,13 @@ namespace Core.Cards {
             this.cards.CollectionChanged += (sender, e) => {
                 if (e.Action == NotifyCollectionChangedAction.Add) {
                     foreach (var card in e.NewItems) {
-                        OnCardAdded?.Invoke((Card) card);
+                        CardAdded?.Invoke((Card) card);
                     }
                 }
                 
                 if (e.Action == NotifyCollectionChangedAction.Remove) {
                     foreach (var card in e.OldItems) {
-                        OnCardRemoved?.Invoke((Card) card);
+                        CardRemoved?.Invoke((Card) card);
                     }
                 }
             };

@@ -32,7 +32,7 @@ namespace Components {
 
         public static bool IsBootstrapDone => Instance;
 
-        public static event Action OnBootstrapDone;
+        public static event Action BootstrapDone;
 
         private static bool loadingFromBootstrap;
 
@@ -98,7 +98,7 @@ namespace Components {
                 await Task.Yield();
             }
             
-            OnBootstrapDone?.Invoke();
+            BootstrapDone?.Invoke();
             
             return Instance;
         }

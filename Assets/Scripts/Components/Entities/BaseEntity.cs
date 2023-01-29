@@ -25,11 +25,11 @@ namespace Components.Entities {
         }
 
         private void OnEnable() {
-            Health.OnEntityKilled.AddListener(OnKilled);
+            Health.EntityKilled.AddListener(OnKilled);
         }
 
         private void OnDisable() {
-            Health.OnEntityKilled.RemoveListener(OnKilled);
+            Health.EntityKilled.RemoveListener(OnKilled);
         }
 
         private void OnDestroy() {

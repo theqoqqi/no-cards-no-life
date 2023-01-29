@@ -21,7 +21,7 @@ namespace Components.Entities {
 
         private float currentMoveSpeed = 3f;
 
-        public event Action OnTargetPositionReached; 
+        public event Action TargetPositionReached; 
 
         public bool IsOnTargetPosition => Position == targetPosition;
 
@@ -46,7 +46,7 @@ namespace Components.Entities {
             
             if (IsOnTargetPosition) {
                 targetPosition = null;
-                OnTargetPositionReached?.Invoke();
+                TargetPositionReached?.Invoke();
             }
         }
 
@@ -70,11 +70,11 @@ namespace Components.Entities {
             targetPosition = position;
             currentMoveSpeed = moveSpeed;
 
-            OnTargetPositionReached += Listener;
+            TargetPositionReached += Listener;
 
             void Listener() {
                 taskCompletionSource.SetResult(Position.WorldToCell());
-                OnTargetPositionReached -= Listener;
+                TargetPositionReached -= Listener;
             }
 
             return await taskCompletionSource.Task;

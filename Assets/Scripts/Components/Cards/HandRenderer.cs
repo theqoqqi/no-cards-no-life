@@ -24,15 +24,15 @@ namespace Components.Cards {
             SetCurrentDeck(deck);
             AdjustCards();
 
-            deck.OnCardAdded += OnCardAdded;
-            deck.OnCardRemoved += OnCardRemoved;
+            deck.CardAdded += OnCardAdded;
+            deck.CardRemoved += OnCardRemoved;
         }
 
         private void OnDestroy() {
             var deck = Game.Instance.GameState.CurrentHand;
             
-            deck.OnCardAdded -= OnCardAdded;
-            deck.OnCardRemoved -= OnCardRemoved;
+            deck.CardAdded -= OnCardAdded;
+            deck.CardRemoved -= OnCardRemoved;
         }
 
         private void OnCardAdded(Card card) {

@@ -4,9 +4,9 @@ using UnityEngine.Events;
 namespace Components.Entities.Parts {
     public class Health : MonoBehaviour {
 
-        public readonly UnityEvent<DamageDetails> OnEntityKilled = new UnityEvent<DamageDetails>();
+        public readonly UnityEvent<DamageDetails> EntityKilled = new UnityEvent<DamageDetails>();
 
-        public readonly UnityEvent<int> OnHitPointsChanged = new UnityEvent<int>();
+        public readonly UnityEvent<int> HitPointsChanged = new UnityEvent<int>();
 
         private BaseEntity owner;
 
@@ -62,7 +62,7 @@ namespace Components.Entities.Parts {
             ModifyHitPoints(-details.Damage);
 
             if (!IsAlive) {
-                OnEntityKilled.Invoke(details);
+                EntityKilled.Invoke(details);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Components.Entities.Parts {
 
             var modifiedBy = HitPoints - oldHitPoints;
 
-            OnHitPointsChanged.Invoke(modifiedBy);
+            HitPointsChanged.Invoke(modifiedBy);
         }
 
         public readonly struct DamageDetails {

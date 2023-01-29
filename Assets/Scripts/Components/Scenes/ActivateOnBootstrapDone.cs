@@ -8,12 +8,12 @@ namespace Components.Scenes {
             if (!Game.IsBootstrapDone) {
                 gameObject.SetActive(false);
 
-                Game.OnBootstrapDone += OnBootstrapDone;
+                Game.BootstrapDone += OnBootstrapDone;
             }
         }
 
         private void OnDestroy() {
-            Game.OnBootstrapDone -= OnBootstrapDone;
+            Game.BootstrapDone -= OnBootstrapDone;
         }
 
         private void OnBootstrapDone() {

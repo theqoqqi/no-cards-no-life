@@ -28,13 +28,13 @@ namespace Components.Entities.Parts {
 
         private void OnEnable() {
             if (health) {
-                health.OnHitPointsChanged.AddListener(OnHitPointsChanged);
+                health.HitPointsChanged.AddListener(OnHitPointsChanged);
             }
         }
 
         private void OnDisable() {
             if (health) {
-                health.OnHitPointsChanged.RemoveListener(OnHitPointsChanged);
+                health.HitPointsChanged.RemoveListener(OnHitPointsChanged);
             }
         }
 
