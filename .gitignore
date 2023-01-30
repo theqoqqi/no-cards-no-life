@@ -77,6 +77,8 @@ crashlytics-build.properties
 # Third Party
 /[Aa]ssets/[Tt]hird[Pp]arty/
 
-# MS Word .docx files
+# MS Word files
 ~$*.docx
 ~$*.docx.meta
+~$*.xlsx
+~$*.xlsx.meta
