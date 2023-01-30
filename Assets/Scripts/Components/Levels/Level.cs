@@ -52,13 +52,10 @@ namespace Components.Levels {
         }
 
         private void OnCardUsed(CardUsedEvent e) {
-            var count = Game.Instance.GameState.CurrentRun.Combat.Hand.Size;
+            var handSize = Game.Instance.GameState.CurrentRun.Combat.Hand.Size;
+            var deckSize = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
 
-            if (count == 0) {
-                // TODO: это должно быть сделано иначе. Во-первых, я думал сделать кнопку "Умереть",
-                //       а во-вторых текущий подход завершит игру, если применить какую-нибудь карту,
-                //       которая добавляет еще карту, но при этом эта карта была последней.
-                //       Еще нужно не только наличие карт в руке проверять, но и наличие карт в колоде.
+            if (handSize == 0 && deckSize == 0) {
                 combatSystem.FinishCombat(CombatResult.Loose);
             }
         }
