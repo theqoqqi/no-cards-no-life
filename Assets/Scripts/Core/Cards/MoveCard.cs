@@ -12,10 +12,13 @@ namespace Core.Cards {
 
         private readonly AStarSearch.FindOptions findOptions;
 
-        public MoveCard(int maxDistance) : base("Move", new MoveCardStats(maxDistance)) {
+        public MoveCard(int maxDistance) : this(new MoveCardStats(maxDistance)) {
             findOptions = new AStarSearch.FindOptions((_, distance) => {
                 return distance <= maxDistance;
             });
+        }
+
+        private MoveCard(MoveCardStats stats) : base("Move", stats) {
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {

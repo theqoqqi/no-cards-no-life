@@ -14,12 +14,15 @@ namespace Core.GameStates {
 
         public Deck StarterDeck {
             get => starterDeck;
-            set => starterDeck = Checks.NonNull(value, "StarterDeck can not be null");
+            set => starterDeck = value;
         }
         
         private GameRunState currentRun;
 
-        public GameRunState CurrentRun => currentRun;
+        public GameRunState CurrentRun {
+            get => currentRun;
+            set => currentRun = value;
+        }
 
         public void StartFirstRun() {
             starterDeck = firstRunDeck.Clone();
@@ -28,7 +31,8 @@ namespace Core.GameStates {
         }
 
         public void StartNewRun() {
-            currentRun = new GameRunState(starterDeck);
+            currentRun = new GameRunState();
+            currentRun.Deck = starterDeck.Clone();
         }
     }
 }

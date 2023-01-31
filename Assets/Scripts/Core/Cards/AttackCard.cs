@@ -13,8 +13,10 @@ namespace Core.Cards {
 
         protected override int TopRightValue => Stats.damage;
 
-        public AttackCard(int maxDistance, int damage)
-                : base("Attack", new AttackCardStats(maxDistance, damage)) {
+        public AttackCard(int maxDistance, int damage) : this(new AttackCardStats(maxDistance, damage)) {
+        }
+
+        private AttackCard(AttackCardStats stats) : base("Attack", stats) {
         }
 
         public override IEnumerable<Vector2Int> GetSelectableCells(Board board) {

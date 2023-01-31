@@ -7,16 +7,12 @@ namespace Core.GameStates {
 
         public Deck Deck {
             get => deck;
-            set => deck = Checks.NonNull(value, "CurrentRunDeck can not be null");
+            set => deck = value;
         }
 
         private CombatState combat;
 
         public CombatState Combat => combat;
-
-        public GameRunState(Deck starterDeck) {
-            deck = starterDeck;
-        }
 
         public void StartNewCombat() {
             combat = new CombatState(deck);
