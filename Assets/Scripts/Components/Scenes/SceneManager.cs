@@ -26,9 +26,9 @@ namespace Components.Scenes {
 
         private const string DeathScreenSceneName = "Scenes/Screens/DeathScreen";
 
-        private static readonly IList<string> ScreenSceneNames;
+        private static IList<string> screenSceneNames;
 
-        private static readonly IList<string> LevelSceneNames;
+        private static IList<string> levelSceneNames;
 
         [SerializeField] private ScreenFader screenFader;
 
@@ -41,17 +41,6 @@ namespace Components.Scenes {
         private string currentScreenSceneName;
 
         private string currentContentSceneName;
-
-        static SceneManager() {
-            var scenePaths = GetAllScenePaths();
-            
-            IList<string> PathsIn(string directory) {
-                return scenePaths.Where(path => path.StartsWith(directory)).ToList();
-            }
-
-            ScreenSceneNames = PathsIn(ScreenScenesDirectory);
-            LevelSceneNames = PathsIn(LevelScenesDirectory);
-        }
 
         private void Awake() {
             fallbackCamera.enabled = false;
@@ -87,14 +76,14 @@ namespace Components.Scenes {
         }
 
         public async Task AutoLoadScene(string sceneName) {
-            var isScreenScene = ScreenSceneNames.Contains(ScreenScenesDirectory + sceneName);
+            var isScreenScene = screenSceneNames.Contains(ScreenScenesDirectory + sceneName);
 
             if (isScreenScene) {
                 await LoadScreenScene(ScreenScenesDirectory + sceneName);
                 return;
             }
 
-            var isLevelScene = LevelSceneNames.Contains(LevelScenesDirectory + sceneName);
+            var isLevelScene = levelSceneNames.Contains(LevelScenesDirectory + sceneName);
             
             if (isLevelScene) {
                 await LoadContentScene(LevelScenesDirectory + sceneName);
@@ -151,6 +140,17 @@ namespace Components.Scenes {
         private async Task FadeIn() {
             fallbackCamera.enabled = false;
             await screenFader.FadeIn(fadeDuration);
+        }
+
+        public static void InitAutoLoad() {
+            var scenePaths = GetAllScenePaths();
+            
+            IList<string> PathsIn(string directory) {
+                return scenePaths.Where(path => path.StartsWith(directory)).ToList();
+            }
+
+            screenSceneNames = PathsIn(ScreenScenesDirectory);
+            levelSceneNames = PathsIn(LevelScenesDirectory);
         }
 
         public static void LoadSystemScene() {

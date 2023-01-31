@@ -16,6 +16,8 @@ namespace Components.Scenes {
                 return;
             }
 
+            SceneManager.InitAutoLoad();
+
             var sceneName = SceneManager.CurrentSceneName;
             var game = await Game.Bootstrap(gameSave.isNull ? null : gameSave);
             var sceneManager = game.SceneManager;
