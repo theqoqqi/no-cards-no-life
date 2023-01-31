@@ -1032,6 +1032,25 @@ MonoBehaviour:
     _name: LevelScreen
     _path: Assets/Scenes/Screens/LevelScreen.unity
     _buildIndex: 3
+  gameSave:
+    firstRunDeck:
+    - rid: 5424926205072637975
+    - rid: 5424926205072637976
+    starterDeck: []
+    currentRun:
+      deck: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5424926205072637975
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 2
+    - rid: 5424926205072637976
+      type: {class: AttackCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 1
+        damage: 1
 --- !u!4 &513892829
 Transform:
   m_ObjectHideFlags: 0

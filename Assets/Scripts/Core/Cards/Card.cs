@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Components.Boards;
 using Components.Entities;
+using Core.Cards.Stats;
 using UnityEngine;
 
 namespace Core.Cards {
     public abstract partial class Card {
         
         private readonly CardMetadata metadata;
+        
+        public abstract CardStats UpcastedStats { get; }
 
         public Sprite ActionSprite => metadata.ActionSprite;
 

@@ -2,15 +2,17 @@
 using System.Threading.Tasks;
 using Components.Scenes;
 using Core.Cards;
+using Core.Cards.Stats;
 using Core.Events;
 using Core.Events.Levels;
 using Core.GameStates;
+using Core.Saves;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Components {
     public class Game : MonoBehaviour {
-        
+
         /*
          * Наверное, игровые данные должны просто храниться в компоненте (ну, в каком-нибудь GameManager),
          * а система загрузки/сохранений уже просто напрямую из этого компонента берет необходимые данные и сохраняет.
@@ -37,7 +39,7 @@ namespace Components {
 
         private static bool loadingFromBootstrap;
 
-        public GameState GameState { get; } = new GameState();
+        public GameState GameState { get; private set; }
 
         [SerializeField] private SceneManager sceneManager;
 
@@ -55,21 +57,19 @@ namespace Components {
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
 
-            InitTestDeck();
-            GameState.StartFirstRun();
-
             if (!loadingFromBootstrap) {
                 await sceneManager.LoadMainMenu();
+                LoadDefaultSave();
             }
-            
+
             GameEvents.Instance.On<LevelDoneEvent>(async e => {
                 var newCard = CreateRandomCard();
-                
+
                 GameState.StarterDeck.AddCard(newCard);
-                
+
                 await sceneManager.LoadLocationMap();
             });
-            
+
             GameEvents.Instance.On<LevelFailedEvent>(async e => {
                 var newCard = CreateRandomCard();
 
@@ -78,6 +78,38 @@ namespace Components {
 
                 await sceneManager.LoadDeathScreen();
             });
+        }
+
+        private void LateUpdate() {
+            GameEvents.Instance.DispatchEnqueuedEvents();
+        }
+
+        private void LoadDefaultSave() {
+            var gameSave = new GameSaveData();
+
+            gameSave.firstRunDeck = CreateTestDeck();
+
+            Load(gameSave);
+        }
+
+        private static CardStats[] CreateTestDeck() {
+            // Это потом можно будет вынести в сериализуемое поле этого класса (Game.firstRunDeck или Game.defaultSave)
+            return new CardStats[] {
+                    new MoveCardStats(1),
+                    new MoveCardStats(2),
+                    new AttackCardStats(1, 1),
+            };
+        }
+
+        public void Load(GameSaveData gameSave) {
+            if (gameSave == null) {
+                LoadDefaultSave();
+                return;
+            }
+            
+            GameState = SaveLoadSystem.Load(gameSave);
+
+            Debug.Log("LOAD: " + gameSave.firstRunDeck.Length);
         }
 
         private static Card CreateRandomCard() {
@@ -94,31 +126,19 @@ namespace Components {
             }
         }
 
-        private void LateUpdate() {
-            GameEvents.Instance.DispatchEnqueuedEvents();
-        }
-
-        private void InitTestDeck() {
-            var deck = new Deck();
-
-            deck.AddCard(new MoveCard(1));
-            deck.AddCard(new MoveCard(2));
-            deck.AddCard(new AttackCard(1, 1));
-
-            GameState.FirstRunDeck = deck;
-        }
-
-        public static async Task<Game> Bootstrap() {
+        public static async Task<Game> Bootstrap(GameSaveData saveData) {
             loadingFromBootstrap = true;
-            
+
             SceneManager.LoadSystemScene();
 
             while (!Instance) {
                 await Task.Yield();
             }
             
+            Instance.Load(saveData);
+
             BootstrapDone?.Invoke();
-            
+
             return Instance;
         }
     }

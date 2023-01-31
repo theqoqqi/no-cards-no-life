@@ -2,6 +2,8 @@
 
 namespace Core.Cards {
     public abstract class GenericCard<T> : Card where T : CardStats {
+        
+        public override CardStats UpcastedStats => Stats;
 
         protected readonly T Stats;
 
