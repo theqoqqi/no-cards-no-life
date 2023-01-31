@@ -174,7 +174,7 @@ namespace Components {
 
         private static void RestartApp() {
             if (Application.isEditor) {
-                EditorApplication.ExitPlaymode();
+                Application.Quit();
                 return;
             }
             
