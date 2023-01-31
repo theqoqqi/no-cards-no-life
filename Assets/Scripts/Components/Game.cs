@@ -46,38 +46,60 @@ namespace Components {
         public SceneManager SceneManager => sceneManager;
 
         private async void Awake() {
-            if (Instance) {
-                Destroy(gameObject);
+            if (!SetupInstance()) {
                 return;
             }
 
-            DontDestroyOnLoad(gameObject);
-            Instance = this;
-
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 60;
+            SetupSettings();
 
             if (!loadingFromBootstrap) {
                 await sceneManager.LoadMainMenu();
                 LoadDefaultSave();
             }
+        }
 
-            GameEvents.Instance.On<LevelDoneEvent>(async e => {
-                var newCard = CreateRandomCard();
+        private bool SetupInstance() {
+            if (Instance) {
+                Destroy(gameObject);
+                return false;
+            }
 
-                GameState.StarterDeck.AddCard(newCard);
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+            
+            return true;
+        }
 
-                await sceneManager.LoadLocationMap();
-            });
+        private static void SetupSettings() {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+        }
 
-            GameEvents.Instance.On<LevelFailedEvent>(async e => {
-                var newCard = CreateRandomCard();
+        private void OnEnable() {
+            GameEvents.Instance.On<LevelDoneEvent>(OnLevelDone);
+            GameEvents.Instance.On<LevelFailedEvent>(OnLevelFailed);
+        }
 
-                GameState.StarterDeck.AddCard(newCard);
-                GameState.StartNewRun();
+        private void OnDisable() {
+            GameEvents.Instance.Off<LevelDoneEvent>(OnLevelDone);
+            GameEvents.Instance.Off<LevelFailedEvent>(OnLevelFailed);
+        }
 
-                await sceneManager.LoadDeathScreen();
-            });
+        private async void OnLevelDone(LevelDoneEvent e) {
+            var newCard = CreateRandomCard();
+
+            GameState.StarterDeck.AddCard(newCard);
+
+            await sceneManager.LoadLocationMap();
+        }
+
+        private async void OnLevelFailed(LevelFailedEvent e) {
+            var newCard = CreateRandomCard();
+
+            GameState.StarterDeck.AddCard(newCard);
+            GameState.StartNewRun();
+
+            await sceneManager.LoadDeathScreen();
         }
 
         private void LateUpdate() {
