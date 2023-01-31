@@ -26,13 +26,13 @@ namespace Components.Entities.Parts {
             }
         }
 
-        private void OnEnable() {
+        protected virtual void OnEnable() {
             if (health) {
                 health.HitPointsChanged.AddListener(OnHitPointsChanged);
             }
         }
 
-        private void OnDisable() {
+        protected virtual void OnDisable() {
             if (health) {
                 health.HitPointsChanged.RemoveListener(OnHitPointsChanged);
             }
@@ -42,7 +42,7 @@ namespace Components.Entities.Parts {
             StartCoroutine(ModifyHeartCount(changedBy, 0.2f));
         }
 
-        private IEnumerator SetHeartCount(int count) {
+        protected IEnumerator SetHeartCount(int count) {
             yield return ModifyHeartCount(count - hearts.Count, 0f);
         }
 
