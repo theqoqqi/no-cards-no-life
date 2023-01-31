@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Components.Scenes;
-using Core.Cards.Stats;
 using Core.Events;
 using Core.GameStates;
 using Core.Saves;
@@ -26,6 +25,8 @@ namespace Components {
         [SerializeField] private SceneManager sceneManager;
 
         public SceneManager SceneManager => sceneManager;
+
+        [SerializeField] private GameSaveData defaultGameSave;
 
         private async void Awake() {
             if (!SetupInstance()) {
@@ -77,20 +78,7 @@ namespace Components {
         }
 
         private void LoadDefaultSave() {
-            var gameSave = new GameSaveData();
-
-            gameSave.firstRunDeck = CreateTestDeck();
-
-            Load(gameSave);
-        }
-
-        private static CardStats[] CreateTestDeck() {
-            // Это потом можно будет вынести в сериализуемое поле этого класса (Game.firstRunDeck или Game.defaultSave)
-            return new CardStats[] {
-                    new MoveCardStats(1),
-                    new MoveCardStats(2),
-                    new AttackCardStats(1, 1),
-            };
+            Load(defaultGameSave);
         }
 
         private void Save() {
