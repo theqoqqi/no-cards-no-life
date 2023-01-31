@@ -247,7 +247,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b557528787d644beb46402bfd0eebac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultGameSave:
+    firstRunDeck:
+    - rid: 5424926224583491584
+    - rid: 5424926224583491585
+    - rid: 5424926224583491586
+    - rid: 5424926224583491587
+    - rid: 5424926224583491588
+    starterDeck: []
+    currentRun:
+      deck: []
   sceneManager: {fileID: 1447915039}
+  references:
+    version: 2
+    RefIds:
+    - rid: 5424926224583491584
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 1
+    - rid: 5424926224583491585
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 2
+    - rid: 5424926224583491586
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 3
+    - rid: 5424926224583491587
+      type: {class: AttackCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 1
+        damage: 2
+    - rid: 5424926224583491588
+      type: {class: AttackCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 2
+        damage: 1
 --- !u!114 &328358126
 MonoBehaviour:
   m_ObjectHideFlags: 0
