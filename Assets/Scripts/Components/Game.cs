@@ -161,7 +161,7 @@ namespace Components {
         }
 
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.Delete)) {
+            if (Application.isEditor && Input.GetKeyDown(KeyCode.Delete)) {
                 ResetToFirstRun();
             }
         }
