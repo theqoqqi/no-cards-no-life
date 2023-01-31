@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Components.Scenes;
 using Core.Cards;
@@ -7,7 +8,9 @@ using Core.Events;
 using Core.Events.Levels;
 using Core.GameStates;
 using Core.Saves;
+using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace Components {
@@ -39,6 +42,8 @@ namespace Components {
 
         private static bool loadingFromBootstrap;
 
+        private bool isGoingToReset;
+
         public GameState GameState { get; private set; }
 
         [SerializeField] private SceneManager sceneManager;
@@ -54,7 +59,7 @@ namespace Components {
 
             if (!loadingFromBootstrap) {
                 await sceneManager.LoadMainMenu();
-                LoadDefaultSave();
+                LoadCurrentSave();
             }
         }
 
@@ -66,7 +71,7 @@ namespace Components {
 
             DontDestroyOnLoad(gameObject);
             Instance = this;
-            
+
             return true;
         }
 
@@ -106,6 +111,21 @@ namespace Components {
             GameEvents.Instance.DispatchEnqueuedEvents();
         }
 
+        private void OnApplicationQuit() {
+            if (!loadingFromBootstrap && !isGoingToReset) {
+                Save();
+            }
+        }
+
+        private void LoadCurrentSave() {
+            if (SaveLoadSystem.HasSave) {
+                Load();
+            }
+            else {
+                LoadDefaultSave();
+            }
+        }
+
         private void LoadDefaultSave() {
             var gameSave = new GameSaveData();
 
@@ -123,15 +143,49 @@ namespace Components {
             };
         }
 
-        public void Load(GameSaveData gameSave) {
+        private void Save() {
+            SaveLoadSystem.SaveGame(GameState);
+        }
+
+        private void Load() {
+            GameState = SaveLoadSystem.LoadGame();
+        }
+
+        private void Load(GameSaveData gameSave) {
             if (gameSave == null) {
                 LoadDefaultSave();
                 return;
             }
-            
-            GameState = SaveLoadSystem.Load(gameSave);
 
-            Debug.Log("LOAD: " + gameSave.firstRunDeck.Length);
+            GameState = SaveLoadSystem.Load(gameSave);
+        }
+
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.Delete)) {
+                ResetToFirstRun();
+            }
+        }
+
+        private void ResetToFirstRun() {
+            isGoingToReset = true;
+            SaveLoadSystem.DeleteSave();
+            RestartApp();
+        }
+
+        private static void RestartApp() {
+            if (Application.isEditor) {
+                EditorApplication.ExitPlaymode();
+                return;
+            }
+            
+            var executableFileName = GetExecutableFileName();
+            
+            Process.Start(executableFileName);
+            Application.Quit();
+        }
+
+        private static string GetExecutableFileName() {
+            return Application.dataPath.Replace("_Data", ".exe");
         }
 
         private static Card CreateRandomCard() {
@@ -156,7 +210,7 @@ namespace Components {
             while (!Instance) {
                 await Task.Yield();
             }
-            
+
             Instance.Load(saveData);
 
             BootstrapDone?.Invoke();
