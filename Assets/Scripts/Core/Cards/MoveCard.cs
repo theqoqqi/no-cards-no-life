@@ -1,23 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Components.Boards;
+using Core.Cards.Stats;
 using Core.Pathfinding;
-using Core.Util;
 using UnityEngine;
 
 namespace Core.Cards {
-    public class MoveCard : Card {
+    public class MoveCard : GenericCard<MoveCardStats> {
 
-        private readonly int maxDistance;
-
-        protected override int TopLeftValue => maxDistance;
+        protected override int TopLeftValue => Stats.maxDistance;
 
         private readonly AStarSearch.FindOptions findOptions;
 
-        public MoveCard(int maxDistance) : base("Move") {
-            this.maxDistance = maxDistance;
-            
+        public MoveCard(int maxDistance) : base("Move", new MoveCardStats(maxDistance)) {
             findOptions = new AStarSearch.FindOptions((_, distance) => {
                 return distance <= maxDistance;
             });

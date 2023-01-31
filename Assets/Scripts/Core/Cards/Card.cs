@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Components.Boards;
 using Components.Entities;
-using Core.Util;
 using UnityEngine;
 
 namespace Core.Cards {
-    public abstract class Card {
+    public abstract partial class Card {
         
         private readonly CardMetadata metadata;
 
@@ -25,7 +24,11 @@ namespace Core.Cards {
             metadata = Resources.Load<CardMetadata>("ScriptableObjects/CardTypes/" + typeName);
         }
 
-        private Corner? GetCorner(CardMetadata.CornerMetadata metadata, int value) {
+        public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
+
+        public abstract Task Use(Board board, Vector3Int cellPosition);
+
+        private static Corner? GetCorner(CardMetadata.CornerMetadata metadata, int value) {
             if (metadata == null || value == 0) {
                 return null;
             }
@@ -33,31 +36,12 @@ namespace Core.Cards {
             return new Corner(value, metadata.BackgroundSprite, metadata.TypeSprite);
         }
 
-        public abstract IEnumerable<Vector2Int> GetSelectableCells(Board board);
-
-        public abstract Task Use(Board board, Vector3Int cellPosition);
-
-        public readonly struct Corner {
-
-            public int Value { get; }
-
-            public Sprite BackgroundSprite { get; }
-
-            public Sprite TypeSprite { get; }
-
-            public Corner(int value, Sprite backgroundSprite, Sprite typeSprite) {
-                Value = value;
-                BackgroundSprite = backgroundSprite;
-                TypeSprite = typeSprite;
-            }
-        }
-
         protected static bool IsInRange(Player player, Vector2Int to, int distance) {
             return IsInRange(player.CellPosition, to, distance);
         }
 
-        protected static bool IsInRange(Vector3Int from, Vector2Int to, int distance) {
-            return ((Vector2Int) from).ManhattanDistance(to) < distance + 1;
+        private static bool IsInRange(Vector3Int from, Vector2Int to, int distance) {
+            return Board.GetDistanceBetween(from, (Vector3Int) to) < distance + 1;
         }
     }
 }
