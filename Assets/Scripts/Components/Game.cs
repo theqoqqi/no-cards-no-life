@@ -2,37 +2,14 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Components.Scenes;
-using Core.Cards;
 using Core.Cards.Stats;
 using Core.Events;
-using Core.Events.Levels;
 using Core.GameStates;
 using Core.Saves;
-using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 namespace Components {
     public class Game : MonoBehaviour {
-
-        /*
-         * Наверное, игровые данные должны просто храниться в компоненте (ну, в каком-нибудь GameManager),
-         * а система загрузки/сохранений уже просто напрямую из этого компонента берет необходимые данные и сохраняет.
-         *
-         * К примеру, в GameManager может храниться Deck CurrentDeck, List<Card> UnlockedCards, int deaths и т.д.
-         * То есть это могут быть любые данные, включая мои кастомные классы. Так будет достигнуто следующее:
-         * 1. Все данные хранятся в централизованном хранилище (GameManager)
-         * 2. Можно свободно создавать иерархию собственных классов (Deck, Card и т.д.)
-         * 3. Система загрузки/сохранений может просто обращаться к GameManager, из которого будет брать данные
-         * 4. Использование системы можно будет свести к вызовам методов NewGame/SaveGame/LoadGame/ResetGame и т.д.
-         *
-         * Вроде бы получается достаточно чистая и минимально связанная архитектура.
-         * 
-         * Возможно еще понадобится добавить классы типа SaveGameData, чтобы отделить систему З/С от компонентов.
-         * Тогда получится так: GameManager -> SaveGameData -> SaveLoadManager.
-         * Это позволит отделить чтение данных из игры от записи данных в файл и наоборот.
-         */
 
         public static Game Instance { get; private set; }
 
@@ -78,33 +55,6 @@ namespace Components {
         private static void SetupSettings() {
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
-        }
-
-        private void OnEnable() {
-            GameEvents.Instance.On<LevelDoneEvent>(OnLevelDone);
-            GameEvents.Instance.On<LevelFailedEvent>(OnLevelFailed);
-        }
-
-        private void OnDisable() {
-            GameEvents.Instance.Off<LevelDoneEvent>(OnLevelDone);
-            GameEvents.Instance.Off<LevelFailedEvent>(OnLevelFailed);
-        }
-
-        private async void OnLevelDone(LevelDoneEvent e) {
-            var newCard = CreateRandomCard();
-
-            GameState.StarterDeck.AddCard(newCard);
-
-            await sceneManager.LoadLocationMap();
-        }
-
-        private async void OnLevelFailed(LevelFailedEvent e) {
-            var newCard = CreateRandomCard();
-
-            GameState.StarterDeck.AddCard(newCard);
-            GameState.StartNewRun();
-
-            await sceneManager.LoadDeathScreen();
         }
 
         private void LateUpdate() {
@@ -186,20 +136,6 @@ namespace Components {
 
         private static string GetExecutableFileName() {
             return Application.dataPath.Replace("_Data", ".exe");
-        }
-
-        private static Card CreateRandomCard() {
-            if (Random.Range(0, 2) == 0) {
-                var maxDistance = Random.Range(1, 4);
-
-                return new MoveCard(maxDistance);
-            }
-            else {
-                var maxDistance = Random.Range(1, 3);
-                var damage = Random.Range(1, 3) + Random.Range(0, 2);
-
-                return new AttackCard(maxDistance, damage);
-            }
         }
 
         public static async Task<Game> Bootstrap(GameSaveData saveData) {
