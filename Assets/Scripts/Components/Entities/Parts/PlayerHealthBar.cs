@@ -5,31 +5,23 @@ namespace Components.Entities.Parts {
     public class PlayerHealthBar : HealthBar {
         
         private void Awake() {
-            health = FindObjectOfType<Player>()?.Health;
+            SetHealth(FindObjectOfType<Player>()?.Health);
         }
 
-        protected override void OnEnable() {
-            base.OnEnable();
-            
+        protected void OnEnable() {
             GameEvents.Instance.On<LevelLoadedEvent>(OnLevelLoaded);
         }
 
-        protected override void OnDisable() {
-            base.OnDisable();
-            
+        protected void OnDisable() {
             GameEvents.Instance.Off<LevelLoadedEvent>(OnLevelLoaded);
         }
 
         private void OnLevelLoaded(LevelLoadedEvent e) {
-            if (health) {
+            if (Health) {
                 return;
             }
             
-            health = FindObjectOfType<Player>()?.Health;
-
-            if (health) {
-                StartCoroutine(SetHeartCount(health.HitPoints));
-            }
+            SetHealth(FindObjectOfType<Player>()?.Health);
         }
     }
 }
