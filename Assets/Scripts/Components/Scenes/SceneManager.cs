@@ -133,13 +133,19 @@ namespace Components.Scenes {
         }
 
         private async Task FadeOut() {
+            Cursor.lockState = CursorLockMode.Locked;
+            
             await screenFader.FadeOut(fadeDuration);
+            
             fallbackCamera.enabled = true;
         }
 
         private async Task FadeIn() {
             fallbackCamera.enabled = false;
+            
             await screenFader.FadeIn(fadeDuration);
+            
+            Cursor.lockState = CursorLockMode.None;
         }
 
         public static void InitAutoLoad() {
