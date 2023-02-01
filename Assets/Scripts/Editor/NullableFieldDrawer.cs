@@ -30,12 +30,13 @@ namespace Qoqqi.Inspector.Editor {
 
             var toggleRect = GetToggleRect(position);
             var nullableObject = GetValue(property);
-            var isNull = !EditorGUI.Toggle(toggleRect, !nullableObject.isNull);
-
-            nullableObject.isNull = isNull;
+            var isNullProperty = property.FindPropertyRelative("isNull");
+            var isNull = nullableObject.isNull;
+            var isNullLabel = new GUIContent("--\t\tIs Null");
 
             if (isNull) {
                 EditorGUI.LabelField(position, label);
+                EditorGUI.PropertyField(toggleRect, isNullProperty, isNullLabel, true);
                 return;
             }
 

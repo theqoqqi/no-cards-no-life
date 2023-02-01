@@ -247,7 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b557528787d644beb46402bfd0eebac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 1447915039}
   defaultGameSave:
+    isNull: 0
     firstRunDeck:
     - rid: 5424926224583491584
     - rid: 5424926224583491585
@@ -256,8 +258,8 @@ MonoBehaviour:
     - rid: 5424926224583491588
     starterDeck: []
     currentRun:
+      isNull: 0
       deck: []
-  sceneManager: {fileID: 1447915039}
   references:
     version: 2
     RefIds:
