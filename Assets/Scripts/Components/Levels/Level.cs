@@ -20,22 +20,6 @@ namespace Components.Levels {
             Game.Instance.GameState.CurrentRun.StartNewCombat();
 
             GameEvents.Instance.Enqueue<LevelLoadedEvent>().With(this);
-
-            StartCoroutine(TakeFirstCards());
-        }
-
-        private static IEnumerator TakeFirstCards() {
-            var totalCards = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
-            var cardsToTake = Mathf.Min(totalCards, 3);
-            var takeCardDelay = new WaitForSeconds(0.8f / cardsToTake);
-
-            for (var i = 0; i < cardsToTake; i++) {
-                yield return takeCardDelay;
-                
-                var card = Game.Instance.GameState.CurrentRun.Combat.TakeCard();
-
-                GameEvents.Instance.Enqueue<CardTakenEvent>().With(card);
-            }
         }
 
         private void OnDestroy() {
@@ -48,6 +32,7 @@ namespace Components.Levels {
             GameEvents.Instance.On<EntityDestroyedEvent>(OnEntityDestroyed);
             GameEvents.Instance.On<PlayerDiedEvent>(OnPlayerKilled);
             GameEvents.Instance.On<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.On<CombatStartedEvent>(OnCombatStarted);
             GameEvents.Instance.On<CombatFinishedEvent>(OnCombatFinished);
         }
 
@@ -57,6 +42,7 @@ namespace Components.Levels {
             GameEvents.Instance.Off<EntityDestroyedEvent>(OnEntityDestroyed);
             GameEvents.Instance.Off<PlayerDiedEvent>(OnPlayerKilled);
             GameEvents.Instance.Off<CardUsedEvent>(OnCardUsed);
+            GameEvents.Instance.Off<CombatStartedEvent>(OnCombatStarted);
             GameEvents.Instance.Off<CombatFinishedEvent>(OnCombatFinished);
         }
 
@@ -79,6 +65,10 @@ namespace Components.Levels {
             }
         }
 
+        private void OnCombatStarted(CombatStartedEvent e) {
+            StartCoroutine(TakeFirstCards());
+        }
+
         private void OnCombatFinished(CombatFinishedEvent e) {
             if (e.CombatResult == CombatResult.Win) {
                 CompleteLevel();
@@ -88,6 +78,29 @@ namespace Components.Levels {
             }
             else {
                 throw new ArgumentOutOfRangeException("Unknown combat result: " + e.CombatResult);
+            }
+        }
+
+        private static IEnumerator TakeFirstCards() {
+            var totalCards = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
+            var cardsToTake = Mathf.Min(totalCards, 3);
+
+            return TakeCards(cardsToTake);
+        }
+
+        private static IEnumerator TakeCards(int cardsToTake) {
+            var takeCardDelay = new WaitForSeconds(0.8f / cardsToTake);
+
+            for (var i = 0; i < cardsToTake; i++) {
+                yield return takeCardDelay;
+
+                if (Game.Instance.GameState.CurrentRun.Combat.Deck.IsEmpty) {
+                    break;
+                }
+                
+                var card = Game.Instance.GameState.CurrentRun.Combat.TakeCard();
+
+                GameEvents.Instance.Enqueue<CardTakenEvent>().With(card);
             }
         }
 
