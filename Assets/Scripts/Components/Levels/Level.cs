@@ -36,17 +36,19 @@ namespace Components.Levels {
         }
 
         private void OnEnable() {
-            SetBoard(GetComponentInChildren<Board>());
+            board = GetComponentInChildren<Board>();
             
             GameEvents.Instance.On<EntityDestroyedEvent>(OnEntityDestroyed);
+            GameEvents.Instance.On<PlayerDiedEvent>(OnPlayerKilled);
             GameEvents.Instance.On<CardUsedEvent>(OnCardUsed);
             GameEvents.Instance.On<CombatFinishedEvent>(OnCombatFinished);
         }
 
         private void OnDisable() {
-            SetBoard(null);
+            board = null;
             
             GameEvents.Instance.Off<EntityDestroyedEvent>(OnEntityDestroyed);
+            GameEvents.Instance.Off<PlayerDiedEvent>(OnPlayerKilled);
             GameEvents.Instance.Off<CardUsedEvent>(OnCardUsed);
             GameEvents.Instance.Off<CombatFinishedEvent>(OnCombatFinished);
         }
@@ -57,9 +59,7 @@ namespace Components.Levels {
             }
         }
 
-        private void OnPlayerKilled(Health.DamageDetails damageDetails) {
-            GameEvents.Instance.Enqueue<PlayerDiedEvent>().With(this);
-            
+        private void OnPlayerKilled(PlayerDiedEvent e) {
             combatSystem.FinishCombat(CombatResult.Loose);
         }
 
@@ -90,26 +90,6 @@ namespace Components.Levels {
 
         private void CompleteLevel() {
             GameEvents.Instance.Enqueue<LevelDoneEvent>().With(this);
-        }
-
-        private void SetBoard(Board board) {
-            if (this.board) {
-                RemoveBoardListeners();
-            }
-            
-            this.board = board;
-
-            if (this.board) {
-                AddBoardListeners();
-            }
-        }
-
-        private void RemoveBoardListeners() {
-            board.Player.Killed -= OnPlayerKilled;
-        }
-
-        private void AddBoardListeners() {
-            board.Player.Killed += OnPlayerKilled;
         }
     }
 }
