@@ -42,7 +42,7 @@ namespace Components.Cards {
         }
 
         private Quaternion RandomRotation() {
-            return Quaternion.Euler(0, 0, RandomValue(5));
+            return Quaternion.Euler(0, 0, 0);
         }
 
         private float RandomValue(float bound) {

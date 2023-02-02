@@ -457,6 +457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1039156147}
   - component: {fileID: 1039156148}
+  - component: {fileID: 1039156149}
   m_Layer: 5
   m_Name: Hand
   m_TagString: Untagged
@@ -492,10 +493,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardContainerPrefab: {fileID: 6729015270670445731, guid: 80d53c765bb7fde4592d31586a996af2, type: 3}
-  radius: 6
-  maxStepDistance: 0.8
-  maxTotalDistance: 6
   deckTransform: {fileID: 1811642599}
+  cardAdjuster: {fileID: 1039156149}
+--- !u!114 &1039156149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039156146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2166135429fe49e9a02f693e25f6ca08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scatterPositionsBy: {x: 0.05, y: 0.05}
+  maxStepDistance: 1.5
+  maxTotalDistance: 6
 --- !u!1 &1229362631
 GameObject:
   m_ObjectHideFlags: 0
