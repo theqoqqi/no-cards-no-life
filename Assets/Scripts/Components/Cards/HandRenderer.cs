@@ -6,9 +6,7 @@ using Core.Events.Cards;
 using UnityEngine;
 
 namespace Components.Cards {
-    public class HandRenderer : MonoBehaviour {
-
-        [SerializeField] private GameObject cardContainerPrefab;
+    public class HandRenderer : AbstractCardSet {
 
         [SerializeField] private float radius;
 
@@ -16,9 +14,7 @@ namespace Components.Cards {
 
         [SerializeField] private float maxTotalDistance;
 
-        private readonly Dictionary<Card, CardContainer> cardContainers = new Dictionary<Card, CardContainer>();
-        
-        private IEnumerable<CardController> CardControllers => cardContainers.Values.Select(cc => cc.CardController);
+        private IEnumerable<CardController> CardControllers => CardContainers.Values.Select(cc => cc.CardController);
 
         private void OnEnable() {
             GameEvents.Instance.On<CardTakenEvent>(OnCardTaken);
@@ -48,20 +44,10 @@ namespace Components.Cards {
 
         private void AddCard(Card card) {
             var position = transform.position + Vector3.down * radius;
-            var cardContainer = Instantiate(cardContainerPrefab, gameObject.transform)
-                    .GetComponent<CardContainer>();
+            var rotation = Quaternion.identity;
+            var scale = Vector3.one;
             
-            cardContainer.SetLocalPositionAndRotation(position, Quaternion.identity);
-            cardContainer.SetCard(card);
-
-            cardContainers[card] = cardContainer;
-        }
-
-        private void RemoveCard(Card card) {
-            var cardContainer = cardContainers[card];
-
-            cardContainers.Remove(card);
-            Destroy(cardContainer.gameObject);
+            AddCard(card, position, rotation, scale);
         }
 
         private void AdjustCards() {
