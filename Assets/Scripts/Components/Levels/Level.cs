@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections;
 using Components.Boards;
 using Components.Combats;
 using Components.Entities;
-using Components.Entities.Parts;
 using Core.Events;
 using Core.Events.Cards;
 using Core.Events.Levels;
@@ -14,25 +14,32 @@ namespace Components.Levels {
         private Board board;
 
         [SerializeField] private CombatSystem combatSystem;
-
+        
         private void Start() {
             combatSystem.StartCombat();
             Game.Instance.GameState.CurrentRun.StartNewCombat();
 
             GameEvents.Instance.Enqueue<LevelLoadedEvent>().With(this);
 
-            TakeFirstCards();
+            StartCoroutine(TakeFirstCards());
         }
 
-        private static void TakeFirstCards() {
-
-            var cardsToTake = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
+        private static IEnumerator TakeFirstCards() {
+            var totalCards = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
+            var cardsToTake = Mathf.Min(totalCards, 3);
+            var takeCardDelay = new WaitForSeconds(0.8f / cardsToTake);
 
             for (var i = 0; i < cardsToTake; i++) {
+                yield return takeCardDelay;
+                
                 var card = Game.Instance.GameState.CurrentRun.Combat.TakeCard();
 
                 GameEvents.Instance.Enqueue<CardTakenEvent>().With(card);
             }
+        }
+
+        private void OnDestroy() {
+            StopAllCoroutines();
         }
 
         private void OnEnable() {

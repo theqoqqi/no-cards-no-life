@@ -23,6 +23,10 @@ namespace Components.Cards {
         private Card card;
 
         private HandCamera handCamera;
+        
+        private float scaleOnBoard = 1f;
+        
+        private float scaleInHand = 1f;
 
         private float hoverEasingSpeed = 10f;
 
@@ -93,7 +97,9 @@ namespace Components.Cards {
                 easingTransform.TargetLocalPosition = Vector3.zero;
             }
 
-            easingTransform.TargetLocalScale = Vector3.one * (isGrabbed && IsMouseInUseArea() ? 1f : 1.5f);
+            var scale = isGrabbed && IsMouseInUseArea() ? scaleOnBoard : scaleInHand;
+            
+            easingTransform.TargetLocalScale = new Vector3(scale, scale, 1);
         }
 
         private void UpdateEasingSpeed() {
@@ -139,7 +145,7 @@ namespace Components.Cards {
 
         private void OnMouseEnter() {
             isHovered = true;
-            easingTransform.TargetLocalPosition = Vector3.up * 2;
+            easingTransform.TargetLocalPosition = Vector3.up;
         }
 
         private void OnMouseExit() {

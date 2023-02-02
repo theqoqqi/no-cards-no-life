@@ -1033,11 +1033,17 @@ MonoBehaviour:
     _path: Assets/Scenes/Screens/LevelScreen.unity
     _buildIndex: 3
   gameSave:
+    isNull: 0
     firstRunDeck:
     - rid: 5424926205072637975
-    - rid: 5424926205072637976
+    - rid: 8266267004362293251
+    - rid: 8266267004362293252
+    - rid: 8266267004362293249
+    - rid: 8266267004362293250
+    - rid: 8266267004362293253
     starterDeck: []
     currentRun:
+      isNull: 0
       deck: []
   references:
     version: 2
@@ -1046,11 +1052,26 @@ MonoBehaviour:
       type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
       data:
         maxDistance: 2
-    - rid: 5424926205072637976
-      type: {class: AttackCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+    - rid: 8266267004362293249
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 3
+    - rid: 8266267004362293250
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
       data:
         maxDistance: 1
-        damage: 1
+    - rid: 8266267004362293251
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 2
+    - rid: 8266267004362293252
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 3
+    - rid: 8266267004362293253
+      type: {class: MoveCardStats, ns: Core.Cards.Stats, asm: Assembly-CSharp}
+      data:
+        maxDistance: 3
 --- !u!4 &513892829
 Transform:
   m_ObjectHideFlags: 0

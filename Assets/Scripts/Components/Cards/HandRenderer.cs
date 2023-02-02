@@ -14,6 +14,8 @@ namespace Components.Cards {
 
         [SerializeField] private float maxTotalDistance;
 
+        [SerializeField] private Transform deckTransform;
+
         private IEnumerable<CardController> CardControllers => CardContainers.Values.Select(cc => cc.CardController);
 
         private void OnEnable() {
@@ -43,9 +45,9 @@ namespace Components.Cards {
         }
 
         private void AddCard(Card card) {
-            var position = transform.position + Vector3.down * radius;
+            var position = deckTransform.position - transform.position;
             var rotation = Quaternion.identity;
-            var scale = Vector3.one;
+            var scale = new Vector3(-1, 1, 1);
             
             AddCard(card, position, rotation, scale);
         }

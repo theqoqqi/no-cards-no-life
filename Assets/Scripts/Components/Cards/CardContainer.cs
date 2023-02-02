@@ -1,4 +1,5 @@
-﻿using Components.Utils;
+﻿using System;
+using Components.Utils;
 using Core.Cards;
 using UnityEngine;
 
@@ -9,10 +10,29 @@ namespace Components.Cards {
 
         public CardController CardController => cardController;
 
+        [SerializeField] private GameObject cardFront;
+
+        [SerializeField] private GameObject cardBack;
+
         [SerializeField] private EasingTransform easingTransform;
 
         private void Awake() {
             easingTransform.EasingSpeed = 4f;
+        }
+
+        private void Start() {
+            UpdateActiveSide();
+        }
+
+        private void Update() {
+            UpdateActiveSide();
+        }
+
+        private void UpdateActiveSide() {
+            var isFlipped = transform.localScale.x < 0;
+
+            cardFront.SetActive(!isFlipped);
+            cardBack.SetActive(isFlipped);
         }
 
         public void SetCard(Card card) {
@@ -23,9 +43,11 @@ namespace Components.Cards {
             easingTransform.SetTargetState(position, rotation, scale);
         }
 
-        public void SetLocalPositionAndRotation(Vector3 position, Quaternion rotation) {
+        public void SetLocalTransformState(Vector3 position, Quaternion rotation, Vector3 scale) {
             transform.SetLocalPositionAndRotation(position, rotation);
-            easingTransform.SetTargetState(position, rotation, Vector3.one);
+            transform.localScale = scale;
+            
+            SetTargetTransformState(position, rotation, scale);
         }
     }
 }
