@@ -34,6 +34,7 @@ namespace Components.Levels {
             GameEvents.Instance.On<CardUsedEvent>(OnCardUsed);
             GameEvents.Instance.On<CombatStartedEvent>(OnCombatStarted);
             GameEvents.Instance.On<CombatFinishedEvent>(OnCombatFinished);
+            GameEvents.Instance.On<RoundStartedEvent>(OnRoundStarted);
         }
 
         private void OnDisable() {
@@ -44,6 +45,7 @@ namespace Components.Levels {
             GameEvents.Instance.Off<CardUsedEvent>(OnCardUsed);
             GameEvents.Instance.Off<CombatStartedEvent>(OnCombatStarted);
             GameEvents.Instance.Off<CombatFinishedEvent>(OnCombatFinished);
+            GameEvents.Instance.Off<RoundStartedEvent>(OnRoundStarted);
         }
 
         private void OnEntityDestroyed(EntityDestroyedEvent e) {
@@ -78,6 +80,12 @@ namespace Components.Levels {
             }
             else {
                 throw new ArgumentOutOfRangeException("Unknown combat result: " + e.CombatResult);
+            }
+        }
+
+        private void OnRoundStarted(RoundStartedEvent e) {
+            if (e.TurnInfo.round > 1) {
+                StartCoroutine(TakeCards(1));
             }
         }
 
