@@ -38,7 +38,7 @@ namespace Components.Combats {
         }
 
         private void OnTurnPerformFinished(TurnPerformFinishedEvent e) {
-            Dispatch<TurnFinishedEvent>();
+            DispatchTurnEvent<TurnFinishedEvent>();
         }
 
         private async void OnTurnFinished(TurnFinishedEvent e) {
@@ -52,7 +52,7 @@ namespace Components.Combats {
 
             SwitchTurn();
 
-            Dispatch<TurnStartedEvent>();
+            DispatchTurnEvent<TurnStartedEvent>();
         }
 
         public void StartCombat() {
@@ -62,25 +62,30 @@ namespace Components.Combats {
             
             GameEvents.Instance.Enqueue<CombatStartedEvent>().With(this);
             
-            Dispatch<TurnStartedEvent>();
+            DispatchTurnEvent<TurnStartedEvent>();
         }
 
         public void FinishCombat(CombatResult result) {
             isRunning = false;
             combatResult = result;
         }
-        
-        private void Dispatch<T>() where T : TurnEvent, new() {
-            GameEvents.Instance.Enqueue<T>().With(CurrentTurnPerformer.Entity, currentTurn.Clone());
-        }
 
         private void SwitchTurn() {
+            if (nextTurnInRound == 0) {
+                DispatchTurnEvent<RoundFinishedEvent>();
+            }
+            
             currentTurn.turn++;
             currentTurn.turnInRound = nextTurnInRound;
 
             if (currentTurn.turnInRound == 0) {
                 currentTurn.round++;
+                DispatchTurnEvent<RoundStartedEvent>();
             }
+        }
+        
+        private void DispatchTurnEvent<T>() where T : TurnEvent, new() {
+            GameEvents.Instance.Enqueue<T>().With(CurrentTurnPerformer.Entity, currentTurn.Clone());
         }
     }
 }
