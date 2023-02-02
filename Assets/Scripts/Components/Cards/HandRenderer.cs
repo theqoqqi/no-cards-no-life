@@ -2,7 +2,7 @@
 using System.Linq;
 using Core.Cards;
 using Core.Events;
-using Core.Events.Levels;
+using Core.Events.Cards;
 using UnityEngine;
 
 namespace Components.Cards {
@@ -21,54 +21,23 @@ namespace Components.Cards {
         private IEnumerable<CardController> CardControllers => cardContainers.Values.Select(cc => cc.CardController);
 
         private void OnEnable() {
-            GameEvents.Instance.On<CombatStartedEvent>(OnCombatStarted);
-            GameEvents.Instance.On<CombatFinishedEvent>(OnCombatFinished);
+            GameEvents.Instance.On<CardTakenEvent>(OnCardTaken);
+            GameEvents.Instance.On<CardReleasedOnSelectableCellEvent>(OnCardReleasedOnSelectableCell);
         }
 
         private void OnDisable() {
-            GameEvents.Instance.Off<CombatStartedEvent>(OnCombatStarted);
-            GameEvents.Instance.Off<CombatFinishedEvent>(OnCombatFinished);
+            GameEvents.Instance.Off<CardTakenEvent>(OnCardTaken);
+            GameEvents.Instance.Off<CardReleasedOnSelectableCellEvent>(OnCardReleasedOnSelectableCell);
         }
 
-        private void OnCombatStarted(CombatStartedEvent e) {
-            var deck = Game.Instance.GameState.CurrentRun.Combat.Hand;
-            
-            SetCurrentDeck(deck);
-            AdjustCards();
-
-            deck.CardAdded += OnCardAdded;
-            deck.CardRemoved += OnCardRemoved;
-        }
-
-        private void OnCombatFinished(CombatFinishedEvent e) {
-            var deck = Game.Instance.GameState.CurrentRun.Combat.Hand;
-            
-            deck.CardAdded -= OnCardAdded;
-            deck.CardRemoved -= OnCardRemoved;
-        }
-
-        private void OnCardAdded(Card card) {
-            AddCard(card);
+        private void OnCardTaken(CardTakenEvent e) {
+            AddCard(e.Card);
             AdjustCards();
         }
 
-        private void OnCardRemoved(Card card) {
-            RemoveCard(card);
+        private void OnCardReleasedOnSelectableCell(CardReleasedOnSelectableCellEvent e) {
+            RemoveCard(e.Card);
             AdjustCards();
-        }
-
-        private void SetCurrentDeck(Deck deck) {
-            ClearCards();
-
-            foreach (var card in deck.Cards) {
-                AddCard(card);
-            }
-        }
-
-        private void ClearCards() {
-            foreach (var card in cardContainers.Keys) {
-                RemoveCard(card);
-            }
         }
 
         public void SetInteractable(bool isInteractable) {

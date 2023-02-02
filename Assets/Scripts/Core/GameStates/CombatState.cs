@@ -24,12 +24,6 @@ namespace Core.GameStates {
             deck.Shuffle();
         }
 
-        public void TakeAllCards() {
-            while (!deck.IsEmpty) {
-                TakeCard();
-            }
-        }
-
         public Card TakeCard() {
             var card = deck.TakeCard();
             

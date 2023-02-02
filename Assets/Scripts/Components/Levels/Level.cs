@@ -18,9 +18,21 @@ namespace Components.Levels {
         private void Start() {
             combatSystem.StartCombat();
             Game.Instance.GameState.CurrentRun.StartNewCombat();
-            Game.Instance.GameState.CurrentRun.Combat.TakeAllCards();
 
             GameEvents.Instance.Enqueue<LevelLoadedEvent>().With(this);
+
+            TakeFirstCards();
+        }
+
+        private static void TakeFirstCards() {
+
+            var cardsToTake = Game.Instance.GameState.CurrentRun.Combat.Deck.Size;
+
+            for (var i = 0; i < cardsToTake; i++) {
+                var card = Game.Instance.GameState.CurrentRun.Combat.TakeCard();
+
+                GameEvents.Instance.Enqueue<CardTakenEvent>().With(card);
+            }
         }
 
         private void OnEnable() {
