@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionSprite: {fileID: 21300000, guid: fd8540df652854545af5b5fbf7295bc7, type: 3}
   TopLeft:
-    BackgroundSprite: {fileID: -1664420051, guid: b2713bbf286ea3b4d8cf4478d348ee16, type: 3}
-    TypeSprite: {fileID: -564823535, guid: b2713bbf286ea3b4d8cf4478d348ee16, type: 3}
+    BackgroundSprite: {fileID: 21300000, guid: b072a9c0a5c04de46827442f21b9a255, type: 3}
+    TypeSprite: {fileID: 21300000, guid: 1746c2dcb881ed74aa5d480f14d71bc0, type: 3}
   TopRight:
-    BackgroundSprite: {fileID: -1664420051, guid: b2713bbf286ea3b4d8cf4478d348ee16, type: 3}
-    TypeSprite: {fileID: -1024736645, guid: b2713bbf286ea3b4d8cf4478d348ee16, type: 3}
+    BackgroundSprite: {fileID: 21300000, guid: b072a9c0a5c04de46827442f21b9a255, type: 3}
+    TypeSprite: {fileID: 21300000, guid: be4e434a6df33894583efd43e0e088fa, type: 3}

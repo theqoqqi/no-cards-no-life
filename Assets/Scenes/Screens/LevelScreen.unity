@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d8c3aaa0c24f06abd926916748c9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pixelPerfectCamera: {fileID: 519420036}
+  paddingUnits: 4
 --- !u!114 &519420036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scatterPositionsBy: {x: 0, y: 0}
-  maxStepDistance: 1.5
+  maxStepDistance: 1.625
   maxTotalDistance: 6
 --- !u!114 &1039156150
 MonoBehaviour:

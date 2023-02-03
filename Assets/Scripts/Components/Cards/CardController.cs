@@ -87,11 +87,7 @@ namespace Components.Cards {
 
         private void UpdateTargetTransformState() {
             if (isGrabbed) {
-                var localMousePosition = GetLocalMousePosition();
-
-                if (!IsMouseInUseArea()) {
-                    localMousePosition += grabOffset;
-                }
+                var localMousePosition = GetLocalMousePosition() + grabOffset;
 
                 easingTransform.TargetLocalPosition = new Vector3(
                         localMousePosition.x,
@@ -132,9 +128,6 @@ namespace Components.Cards {
             foreach (var childSpriteRenderer in childSpriteRenderers) {
                 ApplyOpacity(childSpriteRenderer, targetOpacity, Time.deltaTime * 10);
             }
-
-            topLeftCorner.SetOpacity(targetOpacity);
-            topRightCorner.SetOpacity(targetOpacity);
 
             ApplyOpacity(actionSpriteRenderer, 1, 1);
         }
@@ -177,7 +170,7 @@ namespace Components.Cards {
             }
             
             isGrabbed = true;
-            grabOffset = Vector3.zero;
+            grabOffset = new Vector3(0, 0.3125f, 0);
             easingTransform.TargetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
             Cursor.visible = false;
         }

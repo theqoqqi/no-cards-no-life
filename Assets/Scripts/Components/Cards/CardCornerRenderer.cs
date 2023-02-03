@@ -1,6 +1,8 @@
-﻿using Core.Cards;
+﻿using System;
+using Core.Cards;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Components.Cards {
     public class CardCornerRenderer : MonoBehaviour {
@@ -9,7 +11,9 @@ namespace Components.Cards {
 
         [SerializeField] private SpriteRenderer typeSpriteRenderer;
 
-        [SerializeField] private TextMeshPro textMesh;
+        [SerializeField] private SpriteRenderer valueSpriteRenderer;
+
+        [SerializeField] private CardDigit cardDigit;
 
         public void Setup(Card.Corner? corner) {
             gameObject.SetActive(corner.HasValue);
@@ -24,19 +28,11 @@ namespace Components.Cards {
         private void Setup(Card.Corner corner) {
             backgroundSpriteRenderer.sprite = corner.BackgroundSprite;
             typeSpriteRenderer.sprite = corner.TypeSprite;
-            textMesh.text = corner.Value.ToString();
+            cardDigit.SetDigit(corner.Value);
         }
 
         public void SetSortingOrder(int order) {
-            textMesh.sortingOrder = order;
-        }
-
-        public void SetOpacity(int opacity) {
-            var color = textMesh.color;
-            
-            color.a = opacity;
-
-            textMesh.color = color;
+            valueSpriteRenderer.sortingOrder = order;
         }
     }
 }
