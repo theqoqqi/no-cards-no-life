@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2166135429fe49e9a02f693e25f6ca08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scatterPositionsBy: {x: 0.05, y: 0.05}
+  scatterPositionsBy: {x: 0, y: 0}
   maxStepDistance: 1.5
   maxTotalDistance: 6
 --- !u!114 &1039156150
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handCamera: {fileID: 545681062}
   screenPosition: {x: 0, y: 1}
-  offset: {x: 0.5, y: -0.5, z: 0}
+  offset: {x: 0.375, y: -0.375, z: 0}
 --- !u!114 &1556980311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ MonoBehaviour:
   spacing: 0.25
   maxSpace: 1
   pivot: {x: 0, y: 0, z: 0}
-  scale: 4
+  scale: 3
 --- !u!1 &1811642598
 GameObject:
   m_ObjectHideFlags: 0

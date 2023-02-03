@@ -32,7 +32,7 @@ namespace Components.Cards {
 
         private float dragEasingSpeed = 20f;
 
-        private float useAreaY = -2f;
+        private float useAreaY = 3f;
 
         private Vector3 grabOffset;
 
@@ -159,7 +159,7 @@ namespace Components.Cards {
             }
             
             isGrabbed = true;
-            grabOffset = Vector3.up;
+            grabOffset = Vector3.zero;
             easingTransform.TargetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
         }
 
@@ -197,8 +197,9 @@ namespace Components.Cards {
 
         private bool IsMouseInUseArea() {
             var mousePosition = handCamera.Camera.ScreenToWorldPoint(Input.mousePosition);
-
-            return mousePosition.y >= useAreaY;
+            var bottomPosition = handCamera.Camera.ViewportToWorldPoint(Vector3.zero);
+            
+            return mousePosition.y >= bottomPosition.y + useAreaY;
         }
     }
 }
