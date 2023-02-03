@@ -587,8 +587,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 3, z: 0.2}
-  m_Center: {x: 0, y: -0.5, z: 0}
+  m_Size: {x: 1.5, y: 2, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3299491250024869833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,6 +604,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 9014592324415131113}
   actionSpriteRenderer: {fileID: 4260194791313814295}
   easingTransform: {fileID: 7863380415801511390}
+  boxCollider: {fileID: 3904164067309064048}
   topLeftCorner: {fileID: 2218079446021643918}
   topRightCorner: {fileID: 8849494626244532255}
 --- !u!114 &7863380415801511390

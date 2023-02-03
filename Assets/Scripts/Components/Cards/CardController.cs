@@ -14,6 +14,8 @@ namespace Components.Cards {
 
         [SerializeField] private EasingTransform easingTransform;
 
+        [SerializeField] private BoxCollider boxCollider;
+
         [SerializeField] private CardCornerRenderer topLeftCorner;
 
         [SerializeField] private CardCornerRenderer topRightCorner;
@@ -58,6 +60,10 @@ namespace Components.Cards {
             UpdateEasingSpeed();
             UpdateSortingOrder();
             UpdateCardVisibility();
+        }
+
+        private void LateUpdate() {
+            UpdateCollider();
         }
 
         private void UpdateDraggedState() {
@@ -120,7 +126,7 @@ namespace Components.Cards {
 
         private void UpdateCardVisibility() {
             var targetOpacity = isGrabbed && IsMouseInUseArea() ? 0 : 1;
-            
+
             ApplyOpacity(spriteRenderer, targetOpacity, Time.deltaTime * 10);
 
             foreach (var childSpriteRenderer in childSpriteRenderers) {
@@ -131,6 +137,18 @@ namespace Components.Cards {
             topRightCorner.SetOpacity(targetOpacity);
 
             ApplyOpacity(actionSpriteRenderer, 1, 1);
+        }
+
+        private void UpdateCollider() {
+            var y = transform.localPosition.y;
+            var center = boxCollider.center;
+            var size = boxCollider.size;
+            
+            center.y = -y / 2;
+            size.y = 2 + y;
+
+            boxCollider.center = center;
+            boxCollider.size = size;
         }
 
         private void ApplyOpacity(SpriteRenderer spriteRenderer, int opacity, float lerp) {
