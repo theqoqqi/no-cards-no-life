@@ -161,6 +161,7 @@ namespace Components.Cards {
             isGrabbed = true;
             grabOffset = Vector3.zero;
             easingTransform.TargetLocalRotation = Quaternion.Inverse(transform.parent.rotation);
+            Cursor.visible = false;
         }
 
         private void OnMouseUp() {
@@ -171,6 +172,7 @@ namespace Components.Cards {
             isGrabbed = false;
             easingTransform.TargetLocalPosition = Vector3.zero;
             easingTransform.TargetLocalRotation = Quaternion.identity;
+            Cursor.visible = true;
 
             if (IsMouseInUseArea()) {
                 GameEvents.Instance.Enqueue<CardReleasedOnBoardEvent>().With(card);
