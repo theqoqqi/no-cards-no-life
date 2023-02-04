@@ -3,9 +3,11 @@ using Core.Events.Levels;
 
 namespace Components.Entities.Parts {
     public class PlayerHealthBar : HealthBar {
+
+        private Player player;
         
         private void Awake() {
-            SetHealth(FindObjectOfType<Player>()?.Health);
+            TryAttachToPlayer();
         }
 
         protected void OnEnable() {
@@ -17,11 +19,19 @@ namespace Components.Entities.Parts {
         }
 
         private void OnLevelLoaded(LevelLoadedEvent e) {
+            TryAttachToPlayer();
+        }
+
+        private void TryAttachToPlayer() {
             if (Health) {
                 return;
             }
             
-            SetHealth(FindObjectOfType<Player>()?.Health);
+            player = FindObjectOfType<Player>();
+
+            if (player) {
+                SetHealth(player.Health);
+            }
         }
     }
 }

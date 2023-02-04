@@ -43,11 +43,11 @@ namespace Components.Entities.Parts {
         }
 
         private void OnHitPointsChanged(int changedBy) {
-            StartCoroutine(ModifyHeartCount(changedBy, 0.2f));
+            StartCoroutine(SetHeartCount(health.HitPoints, 0.2f));
         }
 
-        protected IEnumerator SetHeartCount(int count) {
-            yield return ModifyHeartCount(count - hearts.Count, 0f);
+        private IEnumerator SetHeartCount(int count, float delayPerHeart = 0f) {
+            yield return ModifyHeartCount(count - hearts.Count, delayPerHeart);
         }
 
         private IEnumerator ModifyHeartCount(int modifyBy, float delayPerHeart) {
@@ -71,9 +71,14 @@ namespace Components.Entities.Parts {
 
         private void RemoveHeart() {
             var lastIndex = hearts.Count - 1;
-            var heart = hearts[lastIndex];
 
-            hearts.RemoveAt(lastIndex);
+            RemoveHeart(lastIndex);
+        }
+
+        protected void RemoveHeart(int index) {
+            var heart = hearts[index];
+
+            hearts.RemoveAt(index);
             Destroy(heart.gameObject);
         }
 
@@ -89,12 +94,9 @@ namespace Components.Entities.Parts {
         }
 
         private Vector3[] GetPositions(int heartCount) {
-            if (heartCount == 0) {
-                return new Vector3[0];
-            }
-
-            if (heartCount == 1) {
-                return new[] {Vector3.zero};
+            switch (heartCount) {
+                case 0: return new Vector3[0];
+                case 1: return new[] {Vector3.zero};
             }
 
             var totalWidth = MathF.Min(maxSpace, spacing * (heartCount - 1));
