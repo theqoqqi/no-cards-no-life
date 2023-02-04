@@ -47,7 +47,7 @@ namespace Components.Cameras {
         }
 
         private void Setup() {
-            if (!board) {
+            if (!board || !board.Player) {
                 return;
             }
 
