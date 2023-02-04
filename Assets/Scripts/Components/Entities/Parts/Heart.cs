@@ -8,8 +8,14 @@ namespace Components.Entities.Parts {
 
         public EasingTransform EasingTransform => easingTransform;
 
-        private void Awake() {
+        protected int Index { get; private set; }
+
+        protected virtual void Awake() {
             EasingTransform.EasingSpeed = 20f;
+        }
+
+        public void SetIndex(int index) {
+            Index = index;
         }
     }
 }

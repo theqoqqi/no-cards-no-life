@@ -20,6 +20,8 @@ namespace Components.Entities.Parts {
 
         [SerializeField] private float scale = 1;
 
+        public float Scale => scale;
+
         private readonly IList<Heart> hearts = new List<Heart>();
 
         private void Start() {
@@ -53,6 +55,11 @@ namespace Components.Entities.Parts {
         private IEnumerator ModifyHeartCount(int modifyBy, float delayPerHeart) {
             Action action = modifyBy > 0 ? AddHeart : RemoveHeart;
             var absValue = Mathf.Abs(modifyBy);
+
+            if (absValue == 0) {
+                Rearrange();
+                yield break;
+            }
 
             for (var i = 0; i < absValue; i++) {
                 action.Invoke();
@@ -90,6 +97,7 @@ namespace Components.Entities.Parts {
                 var position = positions[i];
 
                 heart.EasingTransform.TargetLocalPosition = position;
+                heart.SetIndex(i);
             }
         }
 

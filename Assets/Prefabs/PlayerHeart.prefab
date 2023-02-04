@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2811929062639088658}
   - component: {fileID: 452282773605344244}
-  - component: {fileID: 4800812376977163918}
+  - component: {fileID: 4115915394559381196}
   - component: {fileID: 4613006649951505641}
+  - component: {fileID: 4692245409771835662}
   m_Layer: 5
   m_Name: PlayerHeart
   m_TagString: Untagged
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4800812376977163918
+--- !u!114 &4115915394559381196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,10 +96,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9038005151621712782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6a7df3eca104b97af1e8a54e53f9f7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 581c792a62a64d799e4ce30875b0fcc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   easingTransform: {fileID: 4613006649951505641}
+  spriteRenderer: {fileID: 452282773605344244}
+  collider: {fileID: 4692245409771835662}
 --- !u!114 &4613006649951505641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,3 +114,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afa87fdeeb54e8cb27f792ce4ba5422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &4692245409771835662
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9038005151621712782}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.015625, y: -0.015625}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.42857143, y: 0.5714286}
+    oldSize: {x: 0.21875, y: 0.21875}
+    newSize: {x: 0.21875, y: 0.21875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.21875, y: 0.21875}
+  m_EdgeRadius: 0

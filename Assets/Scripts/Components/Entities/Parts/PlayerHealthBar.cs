@@ -5,7 +5,9 @@ namespace Components.Entities.Parts {
     public class PlayerHealthBar : HealthBar {
 
         private Player player;
-        
+
+        public bool IsInteractable { get; private set; } = true;
+
         private void Awake() {
             TryAttachToPlayer();
         }
@@ -32,6 +34,14 @@ namespace Components.Entities.Parts {
             if (player) {
                 SetHealth(player.Health);
             }
+        }
+
+        public void SacrificeHeart(int index) {
+            RemoveHeart(index);
+        }
+
+        public void SetInteractable(bool isInteractable) {
+            IsInteractable = isInteractable;
         }
     }
 }
