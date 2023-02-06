@@ -1,12 +1,12 @@
 ﻿namespace Core.Util {
     public enum Direction {
         Up,
+        Down,
+        Left,
+        Right,
         UpLeft,
         UpRight,
-        Down,
         DownLeft,
-        DownRight,
-        Left,
-        Right
+        DownRight
     }
 }
