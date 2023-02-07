@@ -15,6 +15,8 @@ namespace Components.Scenes {
         private const string ScreenScenesDirectory = "Scenes/Screens/";
         
         private const string LevelScenesDirectory = "Scenes/Levels/";
+        
+        private const string LocationScenesDirectory = "Scenes/Locations/";
 
         private const string SystemSceneName = "Scenes/SystemScene";
 
@@ -29,6 +31,8 @@ namespace Components.Scenes {
         private static IList<string> screenSceneNames;
 
         private static IList<string> levelSceneNames;
+
+        private static IList<string> locationSceneNames;
 
         [SerializeField] private ScreenFader screenFader;
 
@@ -87,6 +91,13 @@ namespace Components.Scenes {
             
             if (isLevelScene) {
                 await LoadContentScene(LevelScenesDirectory + sceneName);
+                return;
+            }
+
+            var isLocationScene = locationSceneNames.Contains(LocationScenesDirectory + sceneName);
+            
+            if (isLocationScene) {
+                await LoadContentScene(LocationScenesDirectory + sceneName);
                 return;
             }
 
@@ -157,6 +168,7 @@ namespace Components.Scenes {
 
             screenSceneNames = PathsIn(ScreenScenesDirectory);
             levelSceneNames = PathsIn(LevelScenesDirectory);
+            locationSceneNames = PathsIn(LocationScenesDirectory);
         }
 
         public static void LoadSystemScene() {
