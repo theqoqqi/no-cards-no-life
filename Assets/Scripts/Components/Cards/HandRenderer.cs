@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Components.Utils;
 using Core.Cards;
 using Core.Events;
 using Core.Events.Cards;
@@ -10,7 +11,7 @@ namespace Components.Cards {
 
         [SerializeField] private Transform deckTransform;
 
-        [SerializeField] private CardAdjuster cardAdjuster;
+        [SerializeField] private AbstractAdjuster cardAdjuster;
         
         private IEnumerable<CardController> CardControllers => CardContainers.Values.Select(cc => cc.CardController);
 
@@ -26,12 +27,12 @@ namespace Components.Cards {
 
         private void OnCardTaken(CardTakenEvent e) {
             AddCard(e.Card);
-            cardAdjuster.AdjustCards();
+            cardAdjuster.Adjust();
         }
 
         private void OnCardReleasedOnSelectableCell(CardReleasedOnSelectableCellEvent e) {
             RemoveCard(e.Card);
-            cardAdjuster.AdjustCards();
+            cardAdjuster.Adjust();
         }
 
         public void SetInteractable(bool isInteractable) {
