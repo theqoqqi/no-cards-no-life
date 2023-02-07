@@ -4,28 +4,14 @@ using Core.Events.Levels;
 using UnityEngine;
 
 namespace Components.Cameras {
-    public class MainCamera : MonoBehaviour {
-
-        public Camera Camera { get; private set; }
+    public class MainCamera : AbstractCamera {
 
         [SerializeField] private float paddingUnits = 4; 
         
         private Board board;
 
-        private Vector3 Position {
-            get => transform.position;
-            set {
-                var x = value.x;
-                var y = value.y;
-                var z = transform.position.z;
-            
-                transform.position = new Vector3(x, y, z);
-            }
-        }
-
         private void Start() {
             board = FindObjectOfType<Board>();
-            Camera = GetComponent<Camera>();
         }
 
         private void Update() {
