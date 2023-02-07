@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df31345371844c03afc90145e916d0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handCamera: {fileID: 545681062}
+  toCamera: {fileID: 545681062}
   screenPosition: {x: 0, y: 0}
   offset: {x: 1.25, y: 1.5, z: 0}
 --- !u!61 &299802226
@@ -498,7 +498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a4a10d1e8742b2b1153d2932fb4c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 545681061}
 --- !u!114 &545681063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1039156147}
   - component: {fileID: 1039156148}
-  - component: {fileID: 1039156149}
+  - component: {fileID: 1039156151}
   - component: {fileID: 1039156150}
   m_Layer: 5
   m_Name: Hand
@@ -659,22 +658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardContainerPrefab: {fileID: 6729015270670445731, guid: 80d53c765bb7fde4592d31586a996af2, type: 3}
   deckTransform: {fileID: 1811642599}
-  cardAdjuster: {fileID: 1039156149}
---- !u!114 &1039156149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1039156146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2166135429fe49e9a02f693e25f6ca08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scatterPositionsBy: {x: 0, y: 0}
-  maxStepDistance: 1.625
-  maxTotalDistance: 6
+  cardAdjuster: {fileID: 1039156151}
 --- !u!114 &1039156150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,9 +671,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df31345371844c03afc90145e916d0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handCamera: {fileID: 545681062}
+  toCamera: {fileID: 545681062}
   screenPosition: {x: 0.5, y: 0}
   offset: {x: 0, y: 1.5, z: 0}
+--- !u!114 &1039156151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039156146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b615fe763bac48689efeb57a708e0f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsDirection: {x: 1, y: 0, z: 0.01}
+  maxStepDistance: 1.625
+  maxTotalDistance: 6
+  scatterPositionsBy: {x: 0, y: 0}
 --- !u!1 &1229362631
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df31345371844c03afc90145e916d0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handCamera: {fileID: 545681062}
+  toCamera: {fileID: 545681062}
   screenPosition: {x: 0, y: 1}
   offset: {x: 0.375, y: -0.375, z: 0}
 --- !u!114 &1556980311
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df31345371844c03afc90145e916d0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handCamera: {fileID: 545681062}
+  toCamera: {fileID: 545681062}
   screenPosition: {x: 1, y: 0}
   offset: {x: -1.5, y: 1.5, z: 0}
 --- !u!114 &1811642601
