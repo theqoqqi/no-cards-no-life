@@ -3,13 +3,18 @@
 namespace Components.Utils {
     public class EasingTransform : MonoBehaviour {
 
+        [SerializeField] private float easingSpeed = 1;
+
         public Vector3 TargetLocalPosition { get; set; }
 
         public Quaternion TargetLocalRotation { get; set; }
 
         public Vector3 TargetLocalScale { get; set; }
 
-        public float EasingSpeed { get; set; } = 1;
+        public float EasingSpeed {
+            get => easingSpeed;
+            set => easingSpeed = value;
+        }
 
         private void Awake() {
             TargetLocalPosition = transform.localPosition;
