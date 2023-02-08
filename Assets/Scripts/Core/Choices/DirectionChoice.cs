@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Components.Locations;
+using Core.Events;
+using Core.Events.Locations;
 using Core.Util;
 using UnityEngine;
 
@@ -25,6 +27,10 @@ namespace Core.Choices {
                 
                 await location.Map.Player.Body.StartMoveTo(position);
             }
+
+            var sector = location.Map.GetSector(location.Map.Player.CellPosition);
+            
+            GameEvents.Instance.Enqueue<SectorEnteredEvent>().With(sector);
         }
     }
 }

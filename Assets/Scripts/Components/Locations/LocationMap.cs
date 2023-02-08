@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Core.Sectors;
 using Core.Util;
 using UnityEngine;
 
@@ -19,6 +20,12 @@ namespace Components.Locations {
             var currentSector = grid.GetSector(player.CellPosition);
             
             return grid.GetPathToNextSector(currentSector, direction);
+        }
+
+        public Sector GetSector(Vector3Int cellPosition) {
+            var locationSector = grid.GetSector(cellPosition);
+            
+            return locationSector.Sector;
         }
     }
 }

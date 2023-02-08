@@ -7,5 +7,7 @@ namespace Components.Locations {
 
         [SerializeReference, SubclassPicker(true)]
         private Sector sector;
+
+        public Sector Sector => sector;
     }
 }

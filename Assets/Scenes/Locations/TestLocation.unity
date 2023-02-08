@@ -138,6 +138,22 @@ PrefabInstance:
       propertyPath: managedReferences[8266267097954779146]
       value: Assembly-CSharp Core.Sectors.LevelSector
       objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779146].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779146].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779146].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779146].level._buildIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -380,6 +396,22 @@ PrefabInstance:
       propertyPath: managedReferences[8266267097954779142]
       value: Assembly-CSharp Core.Sectors.LevelSector
       objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779142].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779142].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779142].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779142].level._buildIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -450,6 +482,22 @@ PrefabInstance:
       propertyPath: managedReferences[8266267097954779145]
       value: Assembly-CSharp Core.Sectors.LevelSector
       objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779145].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779145].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779145].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779145].level._buildIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -519,6 +567,22 @@ PrefabInstance:
     - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: managedReferences[8266267097954779144]
       value: Assembly-CSharp Core.Sectors.LevelSector
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779144].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779144].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779144].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779144].level._buildIndex
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder
@@ -1247,6 +1311,22 @@ PrefabInstance:
       propertyPath: managedReferences[8266267097954779143]
       value: Assembly-CSharp Core.Sectors.LevelSector
       objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779143].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779143].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779143].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779143].level._buildIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1320,6 +1400,22 @@ PrefabInstance:
     - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: managedReferences[8266267097954779147]
       value: Assembly-CSharp Core.Sectors.LevelSector
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779147].level._name
+      value: TestLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779147].level._path
+      value: Assets/Scenes/Levels/TestLevel.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779147].level._sceneOB
+      value: 
+      objectReference: {fileID: 102900000, guid: dc2afc6ec8e80994c8ed67dde5b2856d, type: 3}
+    - target: {fileID: 639044219, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
+      propertyPath: managedReferences[8266267097954779147].level._buildIndex
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 832607201431705928, guid: 015c283ee216cd74cbb1d963eec63472, type: 3}
       propertyPath: m_RootOrder

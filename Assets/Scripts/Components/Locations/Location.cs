@@ -27,10 +27,12 @@ namespace Components.Locations {
 
         private void OnEnable() {
             GameEvents.Instance.On<ChoiceSelectedEvent>(OnChoiceSelected);
+            GameEvents.Instance.On<SectorEnteredEvent>(OnSectorEntered);
         }
 
         private void OnDisable() {
             GameEvents.Instance.Off<ChoiceSelectedEvent>(OnChoiceSelected);
+            GameEvents.Instance.Off<SectorEnteredEvent>(OnSectorEntered);
         }
 
         private async void OnChoiceSelected(ChoiceSelectedEvent e) {
@@ -42,6 +44,10 @@ namespace Components.Locations {
             }
             
             choiceList.SetInteractable(true);
+        }
+
+        private void OnSectorEntered(SectorEnteredEvent e) {
+            e.Sector.Visit(this);
         }
     }
 }
