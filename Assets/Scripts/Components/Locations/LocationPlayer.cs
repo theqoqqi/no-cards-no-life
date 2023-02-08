@@ -1,4 +1,5 @@
-﻿using Core.Util;
+﻿using Components.Entities;
+using Core.Util;
 using UnityEngine;
 
 namespace Components.Locations {
@@ -6,6 +7,8 @@ namespace Components.Locations {
         
         public Vector3Int CellPosition => transform.position.WorldToCell();
         
-        
+        [SerializeField] private GridAlignedBody body;
+
+        public GridAlignedBody Body => body;
     }
 }

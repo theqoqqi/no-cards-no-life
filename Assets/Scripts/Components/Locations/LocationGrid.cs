@@ -47,7 +47,7 @@ namespace Components.Locations {
             return HasCell<LocationRoad>(cellPosition);
         }
 
-        private LocationSector GetSector(Vector3Int cellPosition) {
+        public LocationSector GetSector(Vector3Int cellPosition) {
             return GetCell<LocationSector>(cellPosition);
         }
 

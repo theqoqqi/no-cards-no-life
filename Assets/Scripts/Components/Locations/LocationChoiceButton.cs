@@ -1,6 +1,6 @@
-﻿using System;
-using Components.Utils;
-using Core.Choices;
+﻿using Core.Choices;
+using Core.Events;
+using Core.Events.Locations;
 using UnityEngine;
 
 namespace Components.Locations {
@@ -16,6 +16,20 @@ namespace Components.Locations {
 
         private Vector3 pressedOffset;
 
+        private Choice choice;
+
+        private bool isHovered;
+
+        private bool isPressed;
+
+        private bool isInteractable = true;
+
+        private bool isUsed;
+
+        private bool IsInteractable => isInteractable && !isUsed;
+        
+        private static readonly Color usedColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        
         private static readonly Color hoveredColor = new Color(0.8f, 0.8f, 0.8f, 1f);
 
         private static readonly Color idleColor = Color.white;
@@ -25,7 +39,60 @@ namespace Components.Locations {
             pressedOffset.z = 0;
         }
 
+        private void Update() {
+            UpdateColor();
+        }
+
+        private void UpdateColor() {
+            if (isUsed) {
+                SetColor(usedColor);
+                return;
+            }
+            
+            if (isHovered) {
+                SetColor(hoveredColor);
+                return;
+            }
+            
+            SetColor(idleColor);
+        }
+
+        private void OnMouseEnter() {
+            isHovered = true;
+        }
+
+        private void OnMouseExit() {
+            isHovered = false;
+        }
+
+        private void OnMouseDown() {
+            if (!IsInteractable) {
+                return;
+            }
+
+            isPressed = true;
+            topLayerTransform.position += pressedOffset;
+        }
+
+        private void OnMouseUp() {
+            if (!IsInteractable || !isPressed) {
+                return;
+            }
+
+            isPressed = false;
+            topLayerTransform.position -= pressedOffset;
+        }
+
+        private void OnMouseUpAsButton() {
+            if (!IsInteractable) {
+                return;
+            }
+            
+            GameEvents.Instance.Enqueue<ChoiceSelectedEvent>().With(choice, this);
+        }
+
         public void SetChoice(Choice choice) {
+            this.choice = choice;
             actionSpriteRenderer.sprite = choice.Sprite;
         }
 
@@ -34,26 +101,17 @@ namespace Components.Locations {
             transform.localScale = scale;
         }
 
-        private void OnMouseEnter() {
-            backgroundSpriteRenderer.color = hoveredColor;
-            actionSpriteRenderer.color = hoveredColor;
+        public void SetInteractable(bool isInteractable) {
+            this.isInteractable = isInteractable;
         }
 
-        private void OnMouseExit() {
-            backgroundSpriteRenderer.color = idleColor;
-            actionSpriteRenderer.color = idleColor;
+        public void SetUsed(bool isUsed) {
+            this.isUsed = isUsed;
         }
 
-        private void OnMouseDown() {
-            topLayerTransform.position += pressedOffset;
-        }
-
-        private void OnMouseUp() {
-            topLayerTransform.position -= pressedOffset;
-        }
-
-        private void OnMouseUpAsButton() {
-            Debug.Log("CLICK");
+        private void SetColor(Color color) {
+            backgroundSpriteRenderer.color = color;
+            actionSpriteRenderer.color = color;
         }
     }
 }

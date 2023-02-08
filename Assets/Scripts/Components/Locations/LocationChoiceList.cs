@@ -12,7 +12,7 @@ namespace Components.Locations {
 
         [SerializeField] private AbstractAdjuster adjuster;
 
-        protected readonly IList<LocationChoiceButton> ChoiceButtons = new List<LocationChoiceButton>();
+        private readonly IList<LocationChoiceButton> ChoiceButtons = new List<LocationChoiceButton>();
         
         private void OnEnable() {
             GameEvents.Instance.On<LocationLoadedEvent>(OnLocationLoaded);
@@ -44,9 +44,10 @@ namespace Components.Locations {
             ChoiceButtons.Add(choiceButton);
         }
 
-        private void RemoveChoice(LocationChoiceButton choiceButton) {
-            ChoiceButtons.Remove(choiceButton);
-            Destroy(choiceButton.gameObject);
+        public void SetInteractable(bool isInteractable) {
+            foreach (var button in ChoiceButtons) {
+                button.SetInteractable(isInteractable);
+            }
         }
     }
 }
