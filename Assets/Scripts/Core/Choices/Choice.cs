@@ -3,11 +3,11 @@ using Components.Locations;
 using UnityEngine;
 
 namespace Core.Choices {
-    public abstract class Choice : ScriptableObject {
-        
-        [SerializeField] private Sprite sprite;
+    public abstract class Choice {
 
-        public Sprite Sprite => sprite;
+        protected abstract ChoiceMetadata UpcastedMetadata { get; }
+
+        public Sprite Sprite => UpcastedMetadata.Sprite;
 
         public abstract bool CanBeApplied(Location location);
 

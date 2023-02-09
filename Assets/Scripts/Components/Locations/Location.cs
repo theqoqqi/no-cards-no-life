@@ -13,9 +13,9 @@ namespace Components.Locations {
 
         public LocationMap Map => map;
 
-        [SerializeField] private Choice[] initialChoices;
+        [SerializeField] private ChoiceMetadata[] initialChoices;
 
-        public IList<Choice> InitialChoices => initialChoices;
+        public IList<ChoiceMetadata> InitialChoices => initialChoices;
 
         private void Awake() {
             choiceList = FindObjectOfType<LocationChoiceList>();

@@ -3,24 +3,23 @@ using Components.Locations;
 using Core.Events;
 using Core.Events.Locations;
 using Core.Util;
-using UnityEngine;
 
 namespace Core.Choices {
-    [CreateAssetMenu(fileName = "Direction Choice", menuName = "NCNL/Choices/Direction Choice", order = 0)]
-    public class DirectionChoice : Choice {
+    public class DirectionChoice : GenericChoice<DirectionChoiceMetadata> {
+        
+        private Direction Direction => Metadata.Direction;
 
-        [SerializeField] private Direction direction;
-
-        public Direction Direction => direction;
-
+        public DirectionChoice(DirectionChoiceMetadata metadata) : base(metadata) {
+        }
+        
         public override bool CanBeApplied(Location location) {
-            var path = location.Map.GetPathToNextSector(direction);
+            var path = location.Map.GetPathToNextSector(Direction);
 
             return path != null && path.Count > 0;
         }
 
         public override async Task Apply(Location location) {
-            var path = location.Map.GetPathToNextSector(direction);
+            var path = location.Map.GetPathToNextSector(Direction);
 
             foreach (var cellPosition in path) {
                 var position = cellPosition.CellToWorld();
